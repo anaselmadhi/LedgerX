@@ -1,5 +1,7 @@
 # LedgerX — transactional financial backend & React workspace
 
+[![LedgerX verification](https://github.com/anaselmadhi/LedgerX/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/anaselmadhi/LedgerX/actions/workflows/ci.yml)
+
 LedgerX is an independently developed fintech portfolio project built with Python, FastAPI,
 SQLAlchemy 2 and PostgreSQL. It demonstrates exact monetary arithmetic, authenticated account
 ownership, double-entry bookkeeping, concurrent spending protection, persistent idempotency,
@@ -26,8 +28,14 @@ and [design/methodology](docs/LATENCY.md).
 
 The archived 20 October HTTP experiment completed **90 cases / 18,000 timed requests with zero
 unexpected responses** and correct accounting. Those numbers describe its archived revision,
-not schema `0004`. The temporary HTTPS tunnel was started successfully on 26 October; the external signup journey
-remains to test. Remote CI and hosted deployment have not been executed. See the
+not schema `0004`. On 26 October, the project owner reported successful remote access and transfers
+from a friend's computer through the temporary HTTPS tunnel. The subsequent administrator
+reconciliation showed **7 accounts, 8 transfers, 16 journal entries and no discrepancies**.
+The first [GitHub Actions run](https://github.com/anaselmadhi/LedgerX/actions/workflows/ci.yml)
+**succeeded for commit `d65fb3c`**: both `verify` and `container-browser` passed, with a total
+duration of **11 min 27 s**. The owner supplied the run summary; its scope and artifact digests
+are recorded in the [CI evidence summary](artifacts/ci/initial-run-summary.json).
+A cloud-hosted deployment has not been executed. See the
 [sharing guide](docs/SHARING.md), [deployment guide](docs/DEPLOYMENT.md) and
 [GitHub workflow](docs/GITHUB_WORKFLOW.md).
 
@@ -460,12 +468,12 @@ sequenceDiagram
     participant A as Request A
     participant B as Request B
     participant DB as PostgreSQL
-    A->>DB: Lock ordered accounts; source = 10000
-    B->>DB: Same lock; waits
-    A->>DB: Debit/credit 8000; write entries/key
-    A->>DB: Commit; source = 2000
-    DB-->>B: Lock acquired; current source = 2000
-    B->>DB: Insufficient funds; rollback reservation
+    A->>DB: Lock ordered accounts, source = 10000
+    B->>DB: Same lock, waits
+    A->>DB: Debit/credit 8000, write entries/key
+    A->>DB: Commit, source = 2000
+    DB-->>B: Lock acquired, current source = 2000
+    B->>DB: Insufficient funds, rollback reservation
 ```
 
 Sorting immutable UUIDs gives A→B and B→A the same lock order, reducing deadlocks. All application
@@ -689,7 +697,13 @@ GitHub Actions provisions PostgreSQL 16, runs lint/formatting, unit/integration 
 migration verification, starts Uvicorn and runs the real HTTP E2E tests. It also installs the locked
 frontend dependencies, checks formatting/types, runs Vitest, builds the UI and runs Playwright
 against both controlled fixtures and the real API. JUnit, coverage, browser results and API logs
-are uploaded. The configuration is present; no remote CI run has been claimed.
+are uploaded. The owner supplied the successful summary of **run #1 for `d65fb3c`**:
+`verify` passed in **11 min 24 s** and `container-browser` in **1 min 34 s**, with an overall
+duration of **11 min 27 s** because the jobs run concurrently. The
+[recorded summary](artifacts/ci/initial-run-summary.json) identifies the evidence source and the
+reported archive digests. The archives were not downloaded for independent inspection, so this
+summary establishes job outcomes without adding remote per-test counts. Check
+[GitHub Actions](https://github.com/anaselmadhi/LedgerX/actions) for subsequent commits.
 
 Verification is tracked by revision, so executed results and pending work stay distinct:
 
@@ -710,7 +724,9 @@ Verification is tracked by revision, so executed results and pending work stay d
 | Current `0004`: personal local release | Backup archive created; migration and schema/UI/auth smoke checks passed |
 | Archived 20 October performance experiment | **90/90 cases**, 18,000 measured requests, zero unexpected responses |
 | New latency experiment | 36 closed-loop cases, 1,200 profiled transfers, 18 fixed-arrival cases; accounting verified, high-load targets unmet |
-| Remote CI / public deployment | Configured; not executed |
+| Remote browser demonstration, 26 October | Owner reported successful remote access/transfers; administrator reconciliation found no discrepancies |
+| Remote CI, run #1 at `d65fb3c` | **Success**: `verify` 11 min 24 s, `container-browser` 1 min 34 s; total 11 min 27 s, from the owner-supplied Actions summary |
+| Cloud-hosted deployment | Not executed |
 
 The archived 115-test backend release consists of 53 isolated tests, 60 PostgreSQL-backed tests and two
 separate HTTP tests. Its `deselected` counts are selection filters; all 115 ran across the two
@@ -1164,13 +1180,15 @@ cluster-size snapshot. The project has neither a retention policy nor a sustaine
 | Local Mac | Web app at `http://127.0.0.1:8000`; Swagger at `/docs` | No cloud account. Your Mac and PostgreSQL must be running |
 | Share the repository | Recipient installs dependencies and runs their own copy | They need Python, Node for the build and PostgreSQL; no live access to your database |
 | Screen share / recorded demo | Show the UI, tests and reports | No deployment or public endpoint required; simplest interview demonstration |
-| Temporary HTTPS tunnel | Remote browser reaches your running local FastAPI app | Started on 26 October; browser signup from another device remains to verify |
+| Temporary HTTPS tunnel | Remote browser reaches your running local FastAPI app | Manual remote access/transfers reported on 26 October; subsequent reconciliation passed |
 | Hosted application | Public HTTPS endpoint and persistent PostgreSQL | Hosting and operations need planning; not deployed or claimed production-ready |
 
 A temporary tunnel can avoid purchasing a domain or cloud VM. Cloudflare's documented Quick Tunnel
 option creates an ephemeral address without an account; it has no uptime guarantee and a limit of
-200 in-flight requests. That provider limit says nothing about LedgerX's tested capacity. The opt-in [sharing helper](docs/SHARING.md) created a connected tunnel on 26 October; its
-external browser journey remains to be checked. Start another session with Docker running:
+200 in-flight requests. That provider limit says nothing about LedgerX's tested capacity. The opt-in
+[sharing helper](docs/SHARING.md) was used for the manually reported remote access and transfers
+on 26 October. This observation is separate from the automated browser suite and does not establish
+uptime or capacity. Start another session with Docker running:
 `bash scripts/share_local.sh`. See [Cloudflare Quick Tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/).
 Before sharing, protect admin credentials and restrict access to the demonstration. Loopback binding
 is deliberate; changing it alone is not a complete deployment.

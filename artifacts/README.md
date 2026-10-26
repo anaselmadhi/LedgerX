@@ -75,13 +75,23 @@ trip, production Docker build and personal local deployment passed. Evidence is 
 145 passes and one cleanup failure remain under `releases/2026-10-22-projection-first-run/`.
 The fixed cleanup passed the complete rerun. A backup archive was inspected, not restore-tested.
 
+## First GitHub Actions run
+
+`ci/initial-run-summary.json` transcribes the owner-supplied GitHub Actions summary for run #1 at
+commit `d65fb3c`. It reports both jobs passed and records their durations and the two artifact
+digests displayed by GitHub. It is a transcription of the supplied summary, not a downloaded
+Actions API response or an independent verification of the archive contents. It does not add
+remote per-test counts or establish checks for later commits.
+
 ## Temporary HTTPS sharing
 
 `scripts/share_local.sh` and `compose.share.yaml` provide an opt-in Cloudflare Quick Tunnel.
 The host verified script control flow with four simulated Docker scenarios. On 26 October the
-user's Docker run passed app/database readiness and Cloudflare connectivity prechecks. No
-external signup/transfer journey result is recorded yet. The public URL is ephemeral and is not
-archived here.
+user's Docker run passed app/database readiness and Cloudflare connectivity prechecks. Later that
+day, the owner reported successful remote access/transfers and supplied a clean reconciliation
+screenshot (7 accounts, 8 transfers, 16 journal entries). This manual observation is described in
+`docs/SHARING.md`; it is not an additional automated test artifact. The public URL is ephemeral and
+is not archived here.
 
 ## Current latency experiment
 

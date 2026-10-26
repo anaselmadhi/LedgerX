@@ -1,0 +1,43 @@
+{
+  "evidence_source": "Project owner supplied text copied from the GitHub Actions run summary",
+  "recorded_on": "2026-10-27",
+  "repository": "anaselmadhi/LedgerX",
+  "workflow_name": "LedgerX verification",
+  "workflow_url": "https://github.com/anaselmadhi/LedgerX/actions/workflows/ci.yml",
+  "run_number": 1,
+  "run_id": null,
+  "run_url": null,
+  "event": "push",
+  "branch": "main",
+  "head_sha": "d65fb3c11d99fafff53e0b1daa425609c2604864",
+  "conclusion": "success",
+  "total_duration_seconds": 687,
+  "jobs": [
+    {"name": "verify", "conclusion": "success", "duration_seconds": 684},
+    {"name": "container-browser", "conclusion": "success", "duration_seconds": 94}
+  ],
+  "artifacts": [
+    {
+      "name": "ledgerx-container-browser",
+      "displayed_size": "4.97 MB",
+      "reported_sha256": "8afa7c496ab1b43a409bd158a0f6585476b091473891e2a737f3cf08ab739c00"
+    },
+    {
+      "name": "ledgerx-verification",
+      "displayed_size": "4.97 MB",
+      "reported_sha256": "81c4ee61a19e352eb1ca62583f49d5ac278d125a9e90649f35d7b62eb2d50729"
+    }
+  ],
+  "annotations": {
+    "warning_count": 2,
+    "notice_count": 2,
+    "warning": "Node 20 action runtimes are deprecated and were forced to run on Node 24",
+    "notice": "ubuntu-latest is migrating to Ubuntu 26"
+  },
+  "limitations": [
+    "The exact run URL and numeric run ID were not supplied",
+    "The artifacts were not downloaded or independently hash-checked",
+    "Per-test counts are not inferred from the job-level run summary",
+    "This result applies only to the recorded commit, not to subsequent documentation or CI changes"
+  ]
+}
