@@ -1,0 +1,22 @@
+{
+  "scope": "Frontend with journal projection discrepancy display; schema 0004 production Docker browser run passed",
+  "sha256": "21b31c7a84f9f879ff8a1059c107c6ad986b1a29804483f99f753656156be290",
+  "digest_format": "SHA256 of sorted relative UTF-8 path, NUL, bytes, NUL; src/e2e/tests files plus package.json, package-lock.json, vite.config.ts and playwright.config.ts",
+  "unit_tests_passed": 26,
+  "typescript_and_vite_build": "passed",
+  "current_schema": "0004",
+  "current_backend_isolated_tests_passed": 77,
+  "current_postgresql_and_browser": "147 unit/PostgreSQL + 2 HTTP + 12 browser tests passed on host, 22 October 2026",
+  "last_fully_verified_release": {
+    "schema": "0004",
+    "backend_tests_passed": 149,
+    "statement_coverage_percent": 94.12,
+    "browser_passed": 12,
+    "browser_failed": 0,
+    "browser_skipped": 0,
+    "browser_flaky": 0,
+    "live_docker_postgresql_journeys_passed": 2,
+    "evidence_directory": "artifacts/releases/2026-10-22-projection"
+  },
+  "pdf": "output/pdf/ledgerx-construction-pas-a-pas.pdf"
+}

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="146" time="25.137" timestamp="2026-10-22T01:04:05.519416+02:00" hostname="tsf-516-wpa-2-200.epfl.ch"><testcase classname="tests.test_accounts" name="test_account_creation_and_balance" time="0.502" /><testcase classname="tests.test_accounts" name="test_history_pagination" time="0.250" /><testcase classname="tests.test_accounts" name="test_funding_disabled" time="0.215" /><testcase classname="tests.test_accounts" name="test_cursor_pages_with_tied_timestamps_and_new_entries" time="0.308" /><testcase classname="tests.test_auth_limits" name="test_sliding_window_expiry_and_shared_peer_budget" time="0.000" /><testcase classname="tests.test_auth_limits" name="test_rotating_peers_cannot_bypass_global_budget" time="0.001" /><testcase classname="tests.test_auth_limits" name="test_threaded_requests_cannot_overbook_hashing_slots" time="0.002" /><testcase classname="tests.test_auth_limits" name="test_invalid_limits_and_unbalanced_release_are_rejected" time="0.000" /><testcase classname="tests.test_auth_limits" name="test_http_throttle_ignores_spoofed_headers_and_releases_after_errors" time="0.009" /><testcase classname="tests.test_auth_limits" name="test_actual_auth_routes_reject_before_password_work" time="0.005" /><testcase classname="tests.test_benchmark_stats" name="test_nearest_rank_percentiles_do_not_hide_outliers" time="0.000" /><testcase classname="tests.test_benchmark_stats" name="test_empty_samples_are_not_reported_as_zero_latency" time="0.000" /><testcase classname="tests.test_benchmark_stats" name="test_benchmark_refuses_remote_targets[https://example.com]" time="0.000" /><testcase classname="tests.test_benchmark_stats" name="test_benchmark_refuses_remote_targets[http://example.com]" time="0.000" /><testcase classname="tests.test_benchmark_stats" name="test_benchmark_refuses_remote_targets[http://user:password@localhost]" time="0.000" /><testcase classname="tests.test_benchmark_stats" name="test_benchmark_refuses_remote_targets[file:///tmp]" time="0.000" /><testcase classname="tests.test_benchmark_stats" name="test_failed_benchmark_writes_failed_report_without_fake_samples" time="0.052" /><testcase classname="tests.test_concurrency" name="test_concurrent_transfers_cannot_overspend" time="0.240" /><testcase classname="tests.test_concurrency" name="test_concurrent_same_key_executes_once" time="0.245" /><testcase classname="tests.test_concurrency" name="test_reverse_direction_transfers_do_not_deadlock" time="0.340" /><testcase classname="tests.test_concurrency" name="test_concurrent_reversals_create_one_compensation" time="0.248" /><testcase classname="tests.test_concurrency" name="test_many_concurrent_debits_preserve_money" time="0.306" /><testcase classname="tests.test_concurrency" name="test_same_reversal_key_concurrently_returns_one_result" time="0.243" /><testcase classname="tests.test_cursor" name="test_cursor_round_trip" time="0.000" /><testcase classname="tests.test_cursor" name="test_invalid_cursor[]" time="0.000" /><testcase classname="tests.test_cursor" name="test_invalid_cursor[%%%]" time="0.000" /><testcase classname="tests.test_cursor" name="test_invalid_cursor[e30]" time="0.001" /><testcase classname="tests.test_cursor" name="test_invalid_cursor[Zm9v]" time="0.000" /><testcase classname="tests.test_cursor" name="test_invalid_cursor[\xe9]" time="0.000" /><testcase classname="tests.test_cursor" name="test_invalid_cursor[a]" time="0.000" /><testcase classname="tests.test_cursor" name="test_cursor_cannot_be_reused_for_another_account" time="0.000" /><testcase classname="tests.test_failures" name="test_http_crash_after_flush_is_atomic_and_safe_to_retry" time="0.228" /><testcase classname="tests.test_failures" name="test_database_failure_is_sanitized_and_retryable" time="0.224" /><testcase classname="tests.test_idempotency" name="test_retry_and_conflict" time="0.251" /><testcase classname="tests.test_idempotency" name="test_failed_request_does_not_reserve_key" time="0.269" /><testcase classname="tests.test_idempotency" name="test_key_validation" time="0.230" /><testcase classname="tests.test_idempotency" name="test_failed_request_allows_different_payload" time="0.236" /><testcase classname="tests.test_idempotency" name="test_default_currency_is_canonical" time="0.239" /><testcase classname="tests.test_idempotency" name="test_funding_is_idempotent_and_scoped" time="0.253" /><testcase classname="tests.test_integrity" name="test_stale_identity_map_is_refreshed_after_lock" time="0.237" /><testcase classname="tests.test_integrity" name="test_account_identity_is_immutable" time="0.224" /><testcase classname="tests.test_integrity" name="test_unfinished_key_cannot_commit" time="0.026" /><testcase classname="tests.test_integrity" name="test_completed_key_cannot_change" time="0.233" /><testcase classname="tests.test_integrity" name="test_funding_system_account_returns_404" time="0.184" /><testcase classname="tests.test_integrity" name="test_balance_limits_rollback" time="0.228" /><testcase classname="tests.test_integrity" name="test_updates_to_journal_are_rejected" time="0.222" /><testcase classname="tests.test_local_release" name="test_release_checks_fail_before_personal_app_is_stopped[local]" time="0.310" /><testcase classname="tests.test_local_release" name="test_release_checks_fail_before_personal_app_is_stopped[latency]" time="0.188" /><testcase classname="tests.test_local_release" name="test_release_checks_fail_before_personal_app_is_stopped[web]" time="0.190" /><testcase classname="tests.test_local_release" name="test_release_checks_fail_before_personal_app_is_stopped[build]" time="0.206" /><testcase classname="tests.test_local_release" name="test_backup_failure_restarts_previous_container_without_deploying" time="0.285" /><testcase classname="tests.test_local_release" name="test_failed_deployment_keeps_backup_and_never_restores_automatically[deploy]" time="0.511" /><testcase classname="tests.test_local_release" name="test_failed_deployment_keeps_backup_and_never_restores_automatically[smoke]" time="0.452" /><testcase classname="tests.test_local_release" name="test_release_success_checks_then_backs_up_before_starting_new_app" time="0.436" /><testcase classname="tests.test_local_release" name="test_local_release_rejects_remote_docker_before_any_compose_action" time="0.120" /><testcase classname="tests.test_local_release" name="test_second_release_cannot_remove_the_first_releases_lock" time="0.010" /><testcase classname="tests.test_migrations" name="test_upgrade_preserves_legacy_money_and_quarantines_ownership" time="0.219" /><testcase classname="tests.test_migrations" name="test_downgrade_refuses_to_discard_active_authentication" time="0.208" /><testcase classname="tests.test_observability" name="test_asgi_correlation_and_replay_metrics_do_not_log_secrets" time="0.002" /><testcase classname="tests.test_observability" name="test_unexpected_error_cannot_escape_as_secret_bearing_traceback[False]" time="0.001" /><testcase classname="tests.test_observability" name="test_unexpected_error_cannot_escape_as_secret_bearing_traceback[True]" time="0.003" /><testcase classname="tests.test_open_loop" name="test_fixed_arrivals_do_not_wait_for_slow_responses" time="0.053" /><testcase classname="tests.test_open_loop" name="test_http_failures_and_unknown_outcomes_remain_in_latency_samples" time="0.012" /><testcase classname="tests.test_open_loop" name="test_unexpected_task_error_is_not_silently_lost" time="0.012" /><testcase classname="tests.test_open_loop" name="test_unknown_transfer_result_cannot_claim_exact_accounting" time="0.001" /><testcase classname="tests.test_open_loop" name="test_no_responses_does_not_mean_zero_latency" time="0.000" /><testcase classname="tests.test_open_loop" name="test_invalid_arrival_rate_is_rejected[0]" time="0.008" /><testcase classname="tests.test_open_loop" name="test_invalid_arrival_rate_is_rejected[-1]" time="0.004" /><testcase classname="tests.test_open_loop" name="test_invalid_arrival_rate_is_rejected[nan]" time="0.004" /><testcase classname="tests.test_open_loop" name="test_invalid_arrival_rate_is_rejected[inf]" time="0.004" /><testcase classname="tests.test_open_loop" name="test_setup_failure_records_incomplete_experiment" time="0.005" /><testcase classname="tests.test_operations" name="test_readiness_and_liveness" time="0.202" /><testcase classname="tests.test_operations" name="test_reconciliation_uses_database_state" time="0.247" /><testcase classname="tests.test_operations" name="test_independent_audit_detects_corruption_without_repair" time="0.242" /><testcase classname="tests.test_operations" name="test_request_id_and_bounded_metric_labels" time="0.211" /><testcase classname="tests.test_operations" name="test_lock_timeout_is_retryable_and_does_not_spend" time="0.320" /><testcase classname="tests.test_passwords" name="test_password_hash_is_salted_and_verifies" time="0.560" /><testcase classname="tests.test_passwords" name="test_tokens_are_random_and_only_digest_is_persisted" time="0.000" /><testcase classname="tests.test_passwords" name="test_password_length[short]" time="0.000" /><testcase classname="tests.test_passwords" name="test_password_length[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.000" /><testcase classname="tests.test_passwords" name="test_credentials_hide_password_and_normalize_username" time="0.000" /><testcase classname="tests.test_projection" name="test_direct_projection_change_is_rejected[False]" time="0.233" /><testcase classname="tests.test_projection" name="test_direct_projection_change_is_rejected[True]" time="0.230" /><testcase classname="tests.test_projection" name="test_new_account_cannot_forge_initial_projection" time="0.212" /><testcase classname="tests.test_projection" name="test_bulk_journal_statement_projects_all_entries" time="0.242" /><testcase classname="tests.test_projection" name="test_conflict_ignored_entries_do_not_project_twice" time="0.216" /><testcase classname="tests.test_projection" name="test_projection_and_journal_roll_back_to_savepoint" time="0.237" /><testcase classname="tests.test_projection" name="test_concurrent_projection_increments_are_not_lost" time="0.305" /><testcase classname="tests.test_projection" name="test_independent_reconciliation_detects_projection_corruption" time="0.239"><failure message="sqlalchemy.exc.OperationalError: (psycopg.errors.ObjectInUse) cannot ALTER TABLE &quot;accounts&quot; because it has pending trigger events&#10;[SQL: ALTER TABLE accounts ENABLE TRIGGER immutable_ledger_projection]&#10;(Background on this error at: https://sqlalche.me/e/21/e3q8)">self = &lt;sqlalchemy.engine.base.Connection object at 0x108127740&gt;
+dialect = &lt;sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x107ba5130&gt;
+context = &lt;sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x108190ef0&gt;
+statement = &lt;sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x108193aa0&gt;
+parameters = [{}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -&gt; CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+
+        effective_parameters: Optional[_AnyExecuteParams]
+
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+
+            if self._echo:
+                self._log_info(str_statement)
+
+                stats = context._get_cache_stats()
+
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+&gt;                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1953:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Cursor [closed] [IDLE] (host=localhost user=ledgerx database=ledgerx_test) at 0x107f66e10&gt;
+query = 'ALTER TABLE accounts ENABLE TRIGGER immutable_ledger_projection'
+params = {}, prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -&gt; Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.ObjectInUse: cannot ALTER TABLE "accounts" because it has pending trigger events
+
+.venv/lib/python3.12/site-packages/psycopg/cursor.py:117: ObjectInUse
+
+The above exception was the direct cause of the following exception:
+
+accounts = ('e5bf1dd7-7eb2-4f4c-9970-5e8dd56f35c5', '16362b1b-34b3-4c87-ab56-2757327306e7')
+sessions = sessionmaker(class_='Session', bind=Engine(postgresql+psycopg://ledgerx:***@localhost:5432/ledgerx_test), autoflush=True, expire_on_commit=False)
+
+    def test_independent_reconciliation_detects_projection_corruption(accounts, sessions):
+        # Fault injection is restricted by conftest to a disposable _test database.
+        # No API or operational script disables these triggers.
+        with sessions.begin() as session:
+            session.execute(text("ALTER TABLE accounts DISABLE TRIGGER immutable_ledger_projection"))
+            session.execute(text("ALTER TABLE accounts DISABLE TRIGGER account_matches_ledger"))
+            session.execute(
+                text("UPDATE accounts SET ledger_balance = ledger_balance + 7 WHERE id = :id"),
+                {"id": accounts[0]},
+            )
+            session.execute(text("ALTER TABLE accounts ENABLE TRIGGER immutable_ledger_projection"))
+            session.execute(text("ALTER TABLE accounts ENABLE TRIGGER account_matches_ledger"))
+        try:
+            with sessions() as session:
+                report = reconcile(session)
+                assert not report.consistent
+                assert report.mismatched_accounts == 0
+                assert report.projection_mismatched_accounts == 1
+                assert report.projection_discrepancies[0].difference == 7
+                assert session.get(Account, UUID(accounts[0])).ledger_balance == 10007
+        finally:
+            with sessions.begin() as session:
+                session.execute(
+                    text("ALTER TABLE accounts DISABLE TRIGGER immutable_ledger_projection")
+                )
+                session.execute(
+                    text("UPDATE accounts SET ledger_balance = ledger_balance - 7 WHERE id = :id"),
+                    {"id": accounts[0]},
+                )
+&gt;               session.execute(text("ALTER TABLE accounts ENABLE TRIGGER immutable_ledger_projection"))
+
+tests/test_projection.py:147:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py:2473: in execute
+    return self._execute_internal(
+.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py:2373: in _execute_internal
+    result = conn.execute(
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1458: in execute
+    return meth(
+.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1678: in _execute_clauseelement
+    ret = self._execute_context(
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1832: in _execute_context
+    return self._exec_single_context(
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1972: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:2342: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1953: in _exec_single_context
+    self.dialect.do_execute(
+.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Cursor [closed] [IDLE] (host=localhost user=ledgerx database=ledgerx_test) at 0x107f66e10&gt;
+query = 'ALTER TABLE accounts ENABLE TRIGGER immutable_ledger_projection'
+params = {}, prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -&gt; Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           sqlalchemy.exc.OperationalError: (psycopg.errors.ObjectInUse) cannot ALTER TABLE "accounts" because it has pending trigger events
+E           [SQL: ALTER TABLE accounts ENABLE TRIGGER immutable_ledger_projection]
+E           (Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+.venv/lib/python3.12/site-packages/psycopg/cursor.py:117: OperationalError</failure></testcase><testcase classname="tests.test_projection" name="test_projection_migration_round_trip_preserves_funded_accounts" time="0.313" /><testcase classname="tests.test_projection" name="test_projection_migration_refuses_existing_discrepancies" time="0.282" /><testcase classname="tests.test_reversals" name="test_reversal_preserves_original_and_returns_funds" time="0.276" /><testcase classname="tests.test_reversals" name="test_reversal_cannot_overdraw_and_key_rolls_back" time="0.237" /><testcase classname="tests.test_reversals" name="test_funding_cannot_be_reversed" time="0.224" /><testcase classname="tests.test_reversals" name="test_invalid_reversal_reason[]" time="0.229" /><testcase classname="tests.test_reversals" name="test_invalid_reversal_reason[   ]" time="0.231" /><testcase classname="tests.test_reversals" name="test_invalid_reversal_reason[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.228" /><testcase classname="tests.test_reversals" name="test_database_rejects_incorrect_compensation" time="0.231" /><testcase classname="tests.test_security" name="test_authentication_required_and_passwords_not_echoed" time="0.188" /><testcase classname="tests.test_security" name="test_ownership_and_privilege_boundaries" time="0.634" /><testcase classname="tests.test_security" name="test_only_recipient_can_refund_cross_owner_transfer" time="0.590" /><testcase classname="tests.test_security" name="test_expired_revoked_and_disabled_tokens_are_rejected" time="0.982" /><testcase classname="tests.test_security" name="test_wrong_credentials_generic_errors_and_token_hash_storage" time="0.807" /><testcase classname="tests.test_security" name="test_idempotency_keys_are_scoped_to_the_authenticated_user" time="0.892" /><testcase classname="tests.test_smoke_public" name="test_smoke_rejects_stale_or_missing_schema[0003]" time="0.001" /><testcase classname="tests.test_smoke_public" name="test_smoke_rejects_stale_or_missing_schema[None]" time="0.000" /><testcase classname="tests.test_smoke_public" name="test_smoke_checks_bundle_and_protected_routes_after_current_schema" time="0.001" /><testcase classname="tests.test_startup" name="test_provider_urls_select_psycopg3_and_keep_tls_parameters" time="0.002" /><testcase classname="tests.test_startup" name="test_invalid_database_configuration_does_not_print_secrets" time="0.002" /><testcase classname="tests.test_startup" name="test_public_startup_rejects_unsafe_database_configuration[postgresql://demo:secret@localhost/demo?sslmode=require]" time="0.001" /><testcase classname="tests.test_startup" name="test_public_startup_rejects_unsafe_database_configuration[postgresql://demo:ledgerx_local@db.example/demo?sslmode=require]" time="0.001" /><testcase classname="tests.test_startup" name="test_public_startup_rejects_unsafe_database_configuration[postgresql://demo:secret@db.example/demo]" time="0.001" /><testcase classname="tests.test_startup" name="test_public_startup_rejects_unsafe_database_configuration[postgresql://demo:secret@db.example/demo?sslmode=prefer]" time="0.001" /><testcase classname="tests.test_startup" name="test_public_startup_rejects_unsafe_database_configuration[postgresql://demo:secret@db-pooler.example/demo?sslmode=require]" time="0.001" /><testcase classname="tests.test_startup" name="test_public_startup_accepts_direct_tls_database_and_local_mode_remains_available" time="0.001" /><testcase classname="tests.test_startup" name="test_invalid_ports_are_rejected_without_shell_evaluation[0]" time="0.000" /><testcase classname="tests.test_startup" name="test_invalid_ports_are_rejected_without_shell_evaluation[65536]" time="0.000" /><testcase classname="tests.test_startup" name="test_invalid_ports_are_rejected_without_shell_evaluation[-1]" time="0.000" /><testcase classname="tests.test_startup" name="test_invalid_ports_are_rejected_without_shell_evaluation[abc]" time="0.000" /><testcase classname="tests.test_startup" name="test_invalid_ports_are_rejected_without_shell_evaluation[8000; echo secret]" time="0.000" /><testcase classname="tests.test_startup" name="test_container_startup_migrates_then_honors_provider_port" time="0.001" /><testcase classname="tests.test_startup" name="test_failed_migration_does_not_start_api_or_leak_exception" time="0.001" /><testcase classname="tests.test_transfers" name="test_success_balanced_and_retrievable" time="0.270" /><testcase classname="tests.test_transfers" name="test_insufficient_funds" time="0.232" /><testcase classname="tests.test_transfers" name="test_invalid_transfer_amount[0]" time="0.233" /><testcase classname="tests.test_transfers" name="test_invalid_transfer_amount[-1]" time="0.212" /><testcase classname="tests.test_transfers" name="test_invalid_transfer_amount[0.5]" time="0.221" /><testcase classname="tests.test_transfers" name="test_invalid_transfer_amount[True]" time="0.228" /><testcase classname="tests.test_transfers" name="test_invalid_transfer_amount[100]" time="0.220" /><testcase classname="tests.test_transfers" name="test_invalid_transfer_amount[100000000000000000000]" time="0.224" /><testcase classname="tests.test_transfers" name="test_same_account_currency_missing_and_system" time="0.245" /><testcase classname="tests.test_transfers" name="test_rollback_after_partial_write" time="0.238" /><testcase classname="tests.test_transfers" name="test_database_rejects_unbalanced_transfer" time="0.233" /><testcase classname="tests.test_transfers" name="test_database_rejects_independent_balance_update" time="0.224" /><testcase classname="tests.test_transfers" name="test_journal_immutable" time="0.223" /><testcase classname="tests.test_validation" name="test_invalid_amount[0]" time="0.000" /><testcase classname="tests.test_validation" name="test_invalid_amount[-1]" time="0.000" /><testcase classname="tests.test_validation" name="test_invalid_amount[1.5]" time="0.000" /><testcase classname="tests.test_validation" name="test_invalid_amount[True]" time="0.000" /><testcase classname="tests.test_validation" name="test_invalid_amount[12]" time="0.000" /><testcase classname="tests.test_validation" name="test_invalid_amount[100000000000000000000]" time="0.000" /><testcase classname="tests.test_validation" name="test_same_account" time="0.000" /><testcase classname="tests.test_web_api" name="test_session_profile_and_capabilities_follow_current_permissions" time="0.496" /><testcase classname="tests.test_web_api" name="test_account_collection_is_bounded_paginated_and_owner_scoped" time="0.880" /><testcase classname="tests.test_web_shell" name="test_frontend_missing_build_has_actionable_response" time="0.005" /><testcase classname="tests.test_web_shell" name="test_frontend_shell_headers_and_api_routes" time="0.072" /></testsuite></testsuites>

@@ -1,0 +1,94 @@
+name: LedgerX verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ledgerx
+          POSTGRES_PASSWORD: ledgerx_local
+          POSTGRES_DB: ledgerx_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ledgerx -d ledgerx_test"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql+psycopg://ledgerx:ledgerx_local@localhost:5432/ledgerx_test
+      TEST_DATABASE_URL: postgresql+psycopg://ledgerx:ledgerx_local@localhost:5432/ledgerx_test
+      ENABLE_DEV_FUNDING: "true"
+      BENCHMARK_USERNAME: benchmark-admin
+      BENCHMARK_PASSWORD: ledgerx-isolated-ci-password
+      UV_CACHE_DIR: ${{ github.workspace }}/.runtime/cache/uv
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install uv==0.12.3
+      - run: uv sync --frozen --python 3.12
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: bash scripts/frontend.sh install
+      - run: bash scripts/frontend.sh check
+      - name: Install Chromium for browser tests
+        run: |
+          cd frontend
+          PLAYWRIGHT_BROWSERS_PATH="$GITHUB_WORKSPACE/.runtime/browsers" npx playwright install --with-deps chromium
+      - run: uv run ruff check app tests scripts alembic
+      - run: uv run ruff format --check app tests scripts alembic
+      - run: mkdir -p artifacts
+      - run: uv run pytest -q -m 'not e2e' --cov=app --cov-report=term-missing --cov-report=xml:artifacts/coverage.xml --junitxml=artifacts/integration.xml
+      - run: uv run python -m scripts.verify_migrations
+      - run: uv run python -m scripts.prepare_benchmark
+      - name: Start API and test real HTTP
+        run: |
+          uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 > artifacts/api.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:8000/health; then break; fi
+            sleep 1
+          done
+          E2E_BASE_URL=http://localhost:8000 uv run pytest -q -m e2e --junitxml=artifacts/e2e.xml
+          LEDGERX_LIVE_URL=http://localhost:8000 LEDGERX_ISOLATED_UI_TEST=1 bash scripts/frontend.sh e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledgerx-verification
+          path: artifacts/
+  container-browser:
+    runs-on: ubuntu-latest
+    env:
+      UV_CACHE_DIR: ${{ github.workspace }}/.runtime/cache/uv
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install uv==0.12.3
+      - run: uv sync --frozen --python 3.12
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: bash scripts/frontend.sh install
+      - name: Install Chromium
+        run: |
+          cd frontend
+          PLAYWRIGHT_BROWSERS_PATH="$GITHUB_WORKSPACE/.runtime/browsers" npx playwright install --with-deps chromium
+      - name: Verify the production container through the browser
+        run: bash scripts/verify_web.sh --container
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledgerx-container-browser
+          path: artifacts/
+      - name: Stop CI containers
+        if: always()
+        run: docker compose --profile web-test down

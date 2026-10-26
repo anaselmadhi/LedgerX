@@ -1,0 +1,10 @@
+# Opt-in only: the normal Compose file never starts a public tunnel.
+services:
+  share:
+    image: cloudflare/cloudflared:2026.10.3
+    profiles: [share]
+    command: [tunnel, --no-autoupdate, --url, "http://app:8000"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: "no"

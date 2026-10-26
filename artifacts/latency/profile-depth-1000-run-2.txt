@@ -1,0 +1,36 @@
+         402833 function calls (395533 primitive calls) in 0.369 seconds
+
+   Ordered by: cumulative time
+   List reduced from 658 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.001    0.001    0.369    0.369 profile_workload.py:110(workload)
+      100    0.002    0.000    0.324    0.003 transfer_service.py:51(transfer_money)
+     1300    0.198    0.000    0.224    0.000 connection.py:479(wait)
+      600    0.000    0.000    0.215    0.000 base.py:1414(execute)
+      600    0.000    0.000    0.215    0.000 elements.py:524(_execute_on_connection)
+      600    0.002    0.000    0.215    0.000 base.py:1628(_execute_clauseelement)
+      600    0.001    0.000    0.201    0.000 base.py:1777(_execute_context)
+      500    0.000    0.000    0.177    0.000 session.py:4504(flush)
+      300    0.000    0.000    0.177    0.001 <sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:1(_flush)
+      300    0.001    0.000    0.177    0.001 deprecations.py:249(warned)
+      300    0.002    0.000    0.176    0.001 session.py:4557(_flush)
+      300    0.001    0.000    0.161    0.001 unitofwork.py:442(execute)
+      600    0.000    0.000    0.161    0.000 cursor.py:100(execute)
+      400    0.000    0.000    0.153    0.000 unitofwork.py:641(execute)
+      400    0.002    0.000    0.153    0.000 persistence.py:39(_save_obj)
+      500    0.002    0.000    0.147    0.000 base.py:1836(_exec_single_context)
+      500    0.000    0.000    0.141    0.000 default.py:1191(do_execute)
+      200    0.001    0.000    0.115    0.001 session.py:2201(_execute_internal)
+      100    0.000    0.000    0.103    0.001 transfer_service.py:32(post_entries)
+      100    0.000    0.000    0.091    0.001 idempotency_service.py:16(reserve)
+      400    0.002    0.000    0.082    0.000 persistence.py:966(_emit_insert_statements)
+      100    0.000    0.000    0.079    0.001 session.py:2517(scalar)
+4100/1700    0.003    0.000    0.071    0.000 state_changes.py:93(_go)
+2500/2100    0.001    0.000    0.068    0.000 {built-in method builtins.next}
+ 1000/800    0.000    0.000    0.065    0.000 contextlib.py:141(__exit__)
+      400    0.001    0.000    0.062    0.000 persistence.py:732(_emit_update_statements)
+      100    0.000    0.000    0.051    0.001 bulk_persistence.py:1279(orm_execute_statement)
+      400    0.000    0.000    0.044    0.000 <sqlalchemy generated _go() wrapper for sqlalchemy.orm.session.SessionTransaction.commit>:1(commit)
+      400    0.001    0.000    0.043    0.000 session.py:1323(commit)
+      200    0.000    0.000    0.043    0.000 session.py:1876(_maker_context_manager)

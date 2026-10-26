@@ -1,0 +1,33 @@
+# Public demo blueprint. Review the plan and enter the database secret in Render.
+# No paid services or provider-managed database are provisioned by this file.
+services:
+  - type: web
+    name: ledgerx-demo
+    runtime: docker
+    plan: free
+    region: frankfurt
+    autoDeployTrigger: "off"
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health/live
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: PUBLIC_DEMO
+        value: "true"
+      - key: ENABLE_DEV_FUNDING
+        value: "false"
+      - key: DB_POOL_SIZE
+        value: "2"
+      - key: DB_MAX_OVERFLOW
+        value: "3"
+      - key: DB_CONNECT_TIMEOUT_SECONDS
+        value: "10"
+      - key: AUTH_ATTEMPTS_PER_PEER
+        value: "10"
+      - key: AUTH_ATTEMPTS_TOTAL
+        value: "120"
+      - key: AUTH_WINDOW_SECONDS
+        value: "60"
+      - key: AUTH_MAX_CONCURRENT
+        value: "2"

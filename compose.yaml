@@ -1,0 +1,106 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ledgerx
+      POSTGRES_PASSWORD: ledgerx_local
+      POSTGRES_DB: ledgerx
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./.runtime/postgres:/var/lib/postgresql/data
+      - ./docker/init-test-db.sql:/docker-entrypoint-initdb.d/01-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ledgerx -d ledgerx"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+  app:
+    build:
+      context: .
+      target: production
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg://ledgerx:ledgerx_local@db:5432/ledgerx
+      ENABLE_DEV_FUNDING: ${ENABLE_DEV_FUNDING:-false}
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  tests:
+    profiles: [test]
+    build:
+      context: .
+      target: test
+    environment:
+      DATABASE_URL: postgresql+psycopg://ledgerx:ledgerx_local@db:5432/ledgerx
+      TEST_DATABASE_URL: postgresql+psycopg://ledgerx:ledgerx_local@db:5432/ledgerx_test
+      BENCHMARK_USERNAME: benchmark-admin
+      BENCHMARK_PASSWORD: ${BENCHMARK_PASSWORD:-ledgerx-local-benchmark-password}
+    volumes:
+      - ./artifacts:/code/artifacts
+    depends_on:
+      db:
+        condition: service_healthy
+  benchmark-api:
+    profiles: [performance]
+    build:
+      context: .
+      target: runtime
+    environment:
+      DATABASE_URL: postgresql+psycopg://ledgerx:ledgerx_local@db:5432/ledgerx_bench
+      ENABLE_DEV_FUNDING: "true"
+      DB_POOL_SIZE: 10
+      DB_MAX_OVERFLOW: 10
+    ports:
+      - "127.0.0.1:8001:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  benchmark:
+    profiles: [performance]
+    build:
+      context: .
+      target: test
+    environment:
+      E2E_BASE_URL: http://benchmark-api:8000
+      PROFILE_DATABASE_URL: postgresql+psycopg://ledgerx:ledgerx_local@db:5432/ledgerx_bench
+      BENCHMARK_USERNAME: benchmark-admin
+      BENCHMARK_PASSWORD: ${BENCHMARK_PASSWORD:-ledgerx-local-benchmark-password}
+    volumes:
+      - ./artifacts:/code/artifacts
+      - ./README.md:/code/README.md
+    depends_on:
+      benchmark-api:
+        condition: service_healthy
+    command: ["python", "-m", "scripts.benchmark", "--base-url", "http://benchmark-api:8000", "--update-readme"]
+  web-test-api:
+    profiles: [web-test]
+    build:
+      context: .
+      target: production
+    environment:
+      DATABASE_URL: postgresql+psycopg://ledgerx:ledgerx_local@db:5432/ledgerx_bench
+      ENABLE_DEV_FUNDING: "true"
+    ports:
+      - "127.0.0.1:${LEDGERX_WEB_TEST_PORT:-8002}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 30

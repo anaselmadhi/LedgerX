@@ -1,0 +1,11 @@
+{
+  "scope": "First real PostgreSQL run of schema 0004, before fault-injection cleanup fix",
+  "tests": 146,
+  "passed": 145,
+  "failed": 1,
+  "failure": "test_independent_reconciliation_detects_projection_corruption: ALTER TABLE with pending deferred trigger during cleanup",
+  "seconds": 25.137,
+  "projection_test_sha256": "35b700328ecfdeed97f80ed470df4cc0d275502484d4d8c07726560a16866c07",
+  "migration_sha256": "1fe757e112edfa970488ae907a104d658ec25d97d76dc0d24d819cf6d431cc00",
+  "personal_database_deployment": "not reached"
+}

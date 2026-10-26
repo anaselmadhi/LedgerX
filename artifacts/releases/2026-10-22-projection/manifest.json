@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-10-22T00:25:32.354610+00:00",
+  "schema": "0004",
+  "source_sha256": "e4b2ef44e64cfc2b740f92f0273f25d6fc15398d21688b583ba16593350c2b08",
+  "digest_format": "scripts.benchmark.source_digest: sorted app/alembic/scripts Python files and pyproject.toml; relative path then file bytes",
+  "backend_tests_passed": 149,
+  "frontend_tests_passed": 26,
+  "browser_tests_passed": 12,
+  "coverage": {
+    "covered": 816,
+    "total": 867
+  },
+  "closed_loop_cases": 36,
+  "closed_loop_requests": 7200,
+  "profile_measured_transfers": 1200,
+  "open_loop_offered": 30000,
+  "open_loop_sent": 18439,
+  "open_loop_dropped": 11561,
+  "open_loop_all_targets_met": false,
+  "accounting_verified": true,
+  "personal_docker_release": "completed; expected-schema/UI/auth smoke checks passed; backup archive created",
+  "backup_restore": "not tested; archive listing and checksum only",
+  "remote_ci": "not executed",
+  "report_sha256": {
+    "integration.xml": "a331d470e6d5e4909f43d30dc84991a62c33b74d5d0407117b280d6f26cc5419",
+    "e2e.xml": "6874bcf03fcefd05c8715961fd59e00f12c94abb70dfabc1a6b22c3d29e48be7",
+    "coverage.xml": "490d1df8c021dd4a564cac0994c1086374912235ee792ce6c87dafaaab46d846",
+    "current-unit.xml": "c7b13c637df0335b75fcf939a89127b8f66c08434b00d252ef7b4906c12c53e1",
+    "local-release-unit.xml": "a718d7f948b13bcaf1659fab67a365388cfa9a94cf7734b4313d988d374394bc",
+    "local-verification.log": "4c269df99afea36da808786bebd086a2601e7fd7982460974edec1ce3d9165b5",
+    "web-verification.log": "449dd6de8e1fc2ac08a19bf63b1690886c58bd2345c1f3b3ebdb32ced035f7b6",
+    "local-release.log": "94e1d50bb74244584f8c80615b8afda11277a6c8fbeae4b953ae0cec48968fcd",
+    "frontend-browser-results.json": "3afea4aaee6366f7822d50bf25005f717b88927af46ebdffef73544963aa4c7d",
+    "web-container-api.log": "7fe29947b265e3a7cd3a5bc537fffc94c1fdc56df5df2949102ae7af8ad59291",
+    "latency/benchmark.json": "eb4bf90eb3eca176003da7fa05fddbef742241aa4d6149dfd42e0d7faabb8c10",
+    "latency/benchmark.md": "e3de3bb3b0475f35f3e61b56321bec5e8cb5e2205489732b8a29b379722aa7c9",
+    "latency/profiling.json": "9eaa6082882538048557d54dada9a2eb16d2879f8eaf82e922c658fa34797a36",
+    "latency/open-loop.json": "7076fa6b8a502de8c2cae0ca360f866a0ed1d5e9ab1c571db273abf5ff85b840",
+    "latency/open-loop.md": "9d8c7d3006fac83af5b240de2a444b340a7f35d8fca10d4d439675e81da76bcb",
+    "latency/verification.log": "688b9653a58ee9378f99e665b0ccdd8a4baf1205952370f49ca0455e477a16c7"
+  }
+}
