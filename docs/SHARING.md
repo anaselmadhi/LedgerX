@@ -44,6 +44,22 @@ Registration creates a normal customer, never an administrator. Profiles, financ
 money persist in your PostgreSQL database. A browser reload requires signing in again because
 the frontend keeps its token in memory.
 
+### Keep demo funding enabled across local restarts
+
+If the administrator cannot see **Add demo funds**, add or update this line in the project's
+ignored `.env` file, preserving the other settings:
+
+```dotenv
+ENABLE_DEV_FUNDING=true
+```
+
+Apply the configuration with `docker compose up -d app`, then sign out and sign back in so the
+browser reloads the account's capabilities. Confirm the running container setting with
+`docker compose exec app printenv ENABLE_DEV_FUNDING`. A shell prefix such as
+`ENABLE_DEV_FUNDING=true docker compose up -d app` applies to that command only; a later
+`docker compose up` without that prefix reads `.env` or falls back to the default `false`.
+The repository's default remains disabled, and ordinary customers still cannot issue funds.
+
 ## Stop and restart sharing
 
 Press **Ctrl+C** in the sharing terminal. The temporary tunnel container exits and is removed;
@@ -69,5 +85,11 @@ release. Syntax and merged Compose configuration passed; four simulated command-
 covered an unavailable engine, failed container query, missing app and valid command sequencing.
 On 26 October, the actual helper restarted the existing healthy containers, passed its local API
 check, downloaded `cloudflare/cloudflared:2026.10.3`, and registered a Quick Tunnel. Cloudflare's
-DNS, QUIC, HTTP/2 and API prechecks all passed. The friend signup, transfer and refund through the
-external browser remain to be checked; no hosted deployment or uptime guarantee is claimed.
+DNS, QUIC, HTTP/2 and API prechecks all passed.
+
+Later on 26 October, the project owner reported that a friend could access the app and complete
+transfers from another computer through the tunnel. The owner then supplied an administrator
+reconciliation screenshot checked at **23:27:58 local time**, showing **Everything balances**:
+7 accounts, 8 transfers and 16 journal entries, with no balance modifications. This is a manual
+observation reported by the owner, separate from the automated test results. An external refund
+was not explicitly reported. No cloud-hosted deployment or uptime guarantee is claimed.

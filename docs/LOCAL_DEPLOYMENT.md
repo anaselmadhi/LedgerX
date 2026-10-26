@@ -107,9 +107,11 @@ bash scripts/share_local.sh
 
 Docker must be running. Send the printed `https://...trycloudflare.com` address to your friend,
 who registers their own customer login in the UI. Keep the Mac awake and the sharing terminal open;
-Ctrl+C ends the tunnel. No cloud account or global install is required. On 26 October the helper passed its API check and the Cloudflare connector registered; its
-network prechecks passed. Test signup from another device to verify the full external browser
-journey. A stopped Docker engine does not mean your app or data disappeared, and does not require
+Ctrl+C ends the tunnel. No cloud account or global install is required. On 26 October the helper
+passed its API check and the Cloudflare connector registered; its network prechecks passed. The
+owner subsequently reported successful remote access and transfers from a friend's computer,
+followed by a clean administrator reconciliation; see [the manual evidence](SHARING.md#verification-boundary).
+A stopped Docker engine does not mean your app or data disappeared, and does not require
 rerunning the full release.
 
 ## Verification status
@@ -123,4 +125,5 @@ passed schema/UI/auth checks. Results are archived under
 The first attempt stopped on a fault-injection cleanup error before updating the personal app.
 That error is fixed and the complete rerun passed. Release failure-injection tests separately
 exercise simulated Docker failures and SIGINT cleanup. A saved and readable backup archive has
-not yet been restored into a separate database; public access and remote CI are also unverified.
+not yet been restored into a separate database. Temporary remote access has been reported manually;
+cloud hosting remains unexecuted and the remote CI outcome is awaiting verification.

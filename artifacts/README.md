@@ -79,9 +79,11 @@ The fixed cleanup passed the complete rerun. A backup archive was inspected, not
 
 `scripts/share_local.sh` and `compose.share.yaml` provide an opt-in Cloudflare Quick Tunnel.
 The host verified script control flow with four simulated Docker scenarios. On 26 October the
-user's Docker run passed app/database readiness and Cloudflare connectivity prechecks. No
-external signup/transfer journey result is recorded yet. The public URL is ephemeral and is not
-archived here.
+user's Docker run passed app/database readiness and Cloudflare connectivity prechecks. Later that
+day, the owner reported successful remote access/transfers and supplied a clean reconciliation
+screenshot (7 accounts, 8 transfers, 16 journal entries). This manual observation is described in
+`docs/SHARING.md`; it is not an additional automated test artifact. The public URL is ephemeral and
+is not archived here.
 
 ## Current latency experiment
 

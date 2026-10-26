@@ -4,8 +4,10 @@ The current requested target is **local Docker on the Mac, without cloud hosting
 [LOCAL_DEPLOYMENT.md](LOCAL_DEPLOYMENT.md) for that workflow. The provider steps below are an
 optional future path; the local release does not execute them or create cloud resources.
 
-This guide prepares a public demonstration with fictitious EUR. No public deployment has been
-created or tested yet. Existing local users and balances are not uploaded by these steps.
+This guide prepares a cloud-hosted demonstration with fictitious EUR. No cloud-hosted deployment
+has been created or tested yet. Temporary public access through the local tunnel has been reported
+manually; see [the sharing guide](SHARING.md). Existing local users and balances are not uploaded
+by these steps.
 
 ## 1. Complete the release checks locally
 
@@ -33,10 +35,11 @@ These local results do not establish a public deployment or a remote CI run.
 
 ## 2. Publish the existing project to GitHub
 
-The supplied GitHub username is `anaselmadhi`; no repository URL or authenticated GitHub connection
-has been confirmed. Create a repository for the existing local project and review the files before
-pushing. An initial commit can accurately say **Import LedgerX developed locally**. Keep future
-fixes and enhancements in focused branches/PRs, with actual validation results and normal dates.
+The project has been published at [anaselmadhi/LedgerX](https://github.com/anaselmadhi/LedgerX).
+The owner supplied a successful push of merge commit `d65fb3c`, which combines the local import
+with GitHub's starter README. The [remote CI outcome](https://github.com/anaselmadhi/LedgerX/actions)
+still needs verification. Keep future fixes and enhancements in focused branches/PRs, with actual
+validation results and normal dates.
 
 Commit source, migrations, lockfiles, configuration examples and curated documentation/evidence.
 Exclude `.env*` except `.env.example`, `.runtime`, `.venv`, `node_modules`, temporary browser files,

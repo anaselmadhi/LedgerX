@@ -7,7 +7,7 @@ for fictitious EUR transactions while preserving its double-entry journal and da
 
 | Requirement | Implementation | Evidence |
 |---|---|---|
-| PostgreSQL tests and CI | Independent connections, concurrency barriers, migrations, schema drift checks, GitHub Actions PostgreSQL service | Local tests/migrations passed; remote CI has not run |
+| PostgreSQL tests and CI | Independent connections, concurrency barriers, migrations, schema drift checks, GitHub Actions PostgreSQL service | Local tests/migrations passed; workflow published, remote result awaiting verification |
 | Authentication and ownership | scrypt passwords, hashed opaque tokens, expiry/revocation, immutable account owners, administrative funding | Security and cross-owner tests passed |
 | Refunds | One full compensation, original link/reason, recipient authorization, original-transfer locking and uniqueness | Duplicate, concurrent, insufficient-funds and journal tests passed |
 | Independent reconciliation | Single-statement snapshot, independent journal aggregation, structured discrepancy sample, no repair | Healthy ledger and isolated 7-cent corruption tests passed |
@@ -34,7 +34,8 @@ customer sessions, a transfer, compensation and a global audit. This was execute
 terminal, because the coding sandbox cannot access Docker, PostgreSQL TCP or launch Chromium.
 
 `render.yaml` and the deployment guide prepare a free service with TLS database access, a small
-pool, funding disabled and manual deployment. Remote CI and public deployment remain unexecuted.
+pool, funding disabled and manual deployment. At that stage, remote CI and cloud-hosted deployment
+had not been executed.
 
 ### Subsequent latency work: schema `0004`
 
@@ -73,6 +74,17 @@ startup. Failure-injection tests cover early abort, incomplete backups, failed d
 schema and concurrent releases. Compose configuration and shell syntax checks passed. Actual Docker execution, backup creation, migration and app smoke checks passed. Backup
 restoration and long-duration availability testing remain unverified.
 See [the local workflow and failure behavior](LOCAL_DEPLOYMENT.md).
+
+### Manual remote demonstration and repository publication
+
+On 26 October, the owner reported successful access and transfers from a friend's computer through
+the temporary Cloudflare tunnel. A subsequent administrator screenshot at 23:27:58 local time
+showed **Everything balances**, with 7 accounts, 8 transfers and 16 journal entries. This is a
+manual observation reported by the owner; it adds no automated test count or load/uptime guarantee.
+
+The initial local import and GitHub starter README were merged, and the owner supplied a successful
+push of `d65fb3c` to [the repository](https://github.com/anaselmadhi/LedgerX). The
+[remote CI result](https://github.com/anaselmadhi/LedgerX/actions) is awaiting verification.
 
 Authentication limits are process-local and peer-based. Forwarded-header processing is disabled
 in the supplied startup paths; multiple visitors behind a proxy can share the same budget. Limits
@@ -293,6 +305,7 @@ database backup. Current reports and source digests are archived under
 `artifacts/releases/2026-10-22-projection/`. The `0003` verification and 20 October performance
 baseline remain separately labelled above. Reproduction commands are not pending checks for the
 already verified revision. Backup archive inspection is not proof of successful restoration.
-No external account or public deployment has been created. Remote GitHub CI remains to run.
+No cloud-hosted deployment has been created. Temporary remote access has been reported manually,
+the repository has been published, and the GitHub Actions result still needs verification.
 The project's starting-code provenance has not been independently audited; modifications were
 developed with AI assistance using standard documented patterns.

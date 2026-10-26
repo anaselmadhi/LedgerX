@@ -6,10 +6,11 @@ real creation dates and executed checks. No backdated commits, fictional reviews
 development incidents are part of this workflow.
 
 The GitHub account supplied for publication is `anaselmadhi`, and the repository URL is
-`https://github.com/anaselmadhi/LedgerX.git`. The repository was created with GitHub's starter
-files, so its initial commit must be merged with the local project during the first import. This
-document and the PR template are preparation, not evidence that a commit or PR has already been
-created.
+`https://github.com/anaselmadhi/LedgerX.git`. The initial publication is complete: local import
+[`6b5a135`](https://github.com/anaselmadhi/LedgerX/commit/6b5a135) was merged with GitHub's starter
+README in [`d65fb3c`](https://github.com/anaselmadhi/LedgerX/commit/d65fb3c), and the owner supplied
+a successful push result. The remote CI outcome still needs verification. No pull request has
+been claimed for this initial import.
 
 ## Initial import
 
@@ -21,6 +22,9 @@ snapshot from the engineering report. Review ignored and tracked artifacts befor
 Future changes belong in branches created from this imported state.
 
 ### First publication from the Mac
+
+The initial import below has already been completed. Keep these instructions as a record of that
+procedure; future changes need a new commit and push, not another repository initialization.
 
 The GitHub repository already exists and may contain the README, gitignore or license selected
 during repository creation. Keep those remote files; do not delete the repository or force-push over
@@ -68,7 +72,8 @@ token into this document.
 
 On GitHub, open **Actions → LedgerX verification** and inspect both `verify` and
 `container-browser` jobs. A configured workflow is not a successful run. Save the real run URL
-and result before marking remote CI as verified. The first push/run is still pending.
+and result before marking remote CI as verified. The first push succeeded; its CI result is pending
+verification.
 
 ## Current changes to review
 
@@ -87,7 +92,8 @@ The subsequent schema `0004` projection and fixed-arrival benchmark are another 
 The host release passed 149 backend tests, 26 frontend tests and 12 production-container browser
 cases. Latency measurements include generator drops at higher offered loads; see
 [LATENCY_RESULTS.md](LATENCY_RESULTS.md). The `0004` evidence is archived under
-`artifacts/releases/2026-10-22-projection/`, separately from `0003`. Remote CI has not run.
+`artifacts/releases/2026-10-22-projection/`, separately from `0003`. Check the published
+[Actions workflow](https://github.com/anaselmadhi/LedgerX/actions) for the remote result.
 
 ## Later PRs
 
