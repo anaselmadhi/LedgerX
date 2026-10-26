@@ -9,8 +9,10 @@ The GitHub account supplied for publication is `anaselmadhi`, and the repository
 `https://github.com/anaselmadhi/LedgerX.git`. The initial publication is complete: local import
 [`6b5a135`](https://github.com/anaselmadhi/LedgerX/commit/6b5a135) was merged with GitHub's starter
 README in [`d65fb3c`](https://github.com/anaselmadhi/LedgerX/commit/d65fb3c), and the owner supplied
-a successful push result. The remote CI outcome still needs verification. No pull request has
-been claimed for this initial import.
+a successful push result. The owner subsequently supplied the successful Actions run #1 summary
+for `d65fb3c`: both `verify` and `container-browser` passed. See the
+[recorded CI evidence](../artifacts/ci/initial-run-summary.json). No pull request has been claimed
+for this initial import.
 
 ## Initial import
 
@@ -72,8 +74,9 @@ token into this document.
 
 On GitHub, open **Actions → LedgerX verification** and inspect both `verify` and
 `container-browser` jobs. A configured workflow is not a successful run. Save the real run URL
-and result before marking remote CI as verified. The first push succeeded; its CI result is pending
-verification.
+and result before recording a new revision as verified. The first published commit `d65fb3c`
+passed both jobs in run #1, as reported in the owner-supplied summary. Later commits and PR heads
+must have their own successful checks; this first result does not cover subsequent changes.
 
 ## Current changes to review
 

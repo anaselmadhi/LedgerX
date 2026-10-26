@@ -7,7 +7,7 @@ for fictitious EUR transactions while preserving its double-entry journal and da
 
 | Requirement | Implementation | Evidence |
 |---|---|---|
-| PostgreSQL tests and CI | Independent connections, concurrency barriers, migrations, schema drift checks, GitHub Actions PostgreSQL service | Local tests/migrations passed; workflow published, remote result awaiting verification |
+| PostgreSQL tests and CI | Independent connections, concurrency barriers, migrations, schema drift checks, GitHub Actions PostgreSQL service | Local tests/migrations passed; owner-supplied Actions run #1 summary confirms both jobs passed at `d65fb3c` |
 | Authentication and ownership | scrypt passwords, hashed opaque tokens, expiry/revocation, immutable account owners, administrative funding | Security and cross-owner tests passed |
 | Refunds | One full compensation, original link/reason, recipient authorization, original-transfer locking and uniqueness | Duplicate, concurrent, insufficient-funds and journal tests passed |
 | Independent reconciliation | Single-statement snapshot, independent journal aggregation, structured discrepancy sample, no repair | Healthy ledger and isolated 7-cent corruption tests passed |
@@ -83,8 +83,20 @@ showed **Everything balances**, with 7 accounts, 8 transfers and 16 journal entr
 manual observation reported by the owner; it adds no automated test count or load/uptime guarantee.
 
 The initial local import and GitHub starter README were merged, and the owner supplied a successful
-push of `d65fb3c` to [the repository](https://github.com/anaselmadhi/LedgerX). The
-[remote CI result](https://github.com/anaselmadhi/LedgerX/actions) is awaiting verification.
+push of `d65fb3c` to [the repository](https://github.com/anaselmadhi/LedgerX). The owner then supplied
+the [GitHub Actions](https://github.com/anaselmadhi/LedgerX/actions) run #1 summary: **Success**,
+with `verify` passing in **11 min 24 s** and `container-browser` in **1 min 34 s**. The overall
+duration was **11 min 27 s**; the jobs run concurrently. The two reported artifact names and SHA-256
+digests are recorded in [the CI evidence summary](../artifacts/ci/initial-run-summary.json).
+The archives were not downloaded or independently hash-checked, and no remote per-test counts
+are inferred from the run summary. This evidence applies to `d65fb3c` only.
+
+The successful run also reported two Node 20 action-runtime warnings and two `ubuntu-latest`
+migration notices. The frontend build already selects Node 24; the warnings concern the runtime
+metadata of the checkout/setup/upload actions. Updating those actions to releases using Node 24
+and selecting an explicit supported runner image are follow-up maintenance work. See
+[GitHub's Node migration notice](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/)
+and [the Ubuntu image rollout](https://github.com/actions/runner-images/issues/14748).
 
 Authentication limits are process-local and peer-based. Forwarded-header processing is disabled
 in the supplied startup paths; multiple visitors behind a proxy can share the same budget. Limits
@@ -155,7 +167,8 @@ digests under `artifacts/releases/2026-10-21-pre-projection/`.
 
 Desktop and mobile screenshots were visually inspected. The design uses authored SVG geometry,
 system fonts and local CSS. A complete accessibility/cross-browser audit is not claimed. The projection UI passed unit/type/build checks and the full schema `0004` browser rerun
-(12/12 in 11.6 s). Remote CI remains unexecuted.
+(12/12 in 11.6 s). The first remote CI subsequently passed both jobs at `d65fb3c`, according to
+the owner-supplied Actions summary above.
 
 ## Current measured performance: schema `0004`
 
@@ -306,6 +319,7 @@ database backup. Current reports and source digests are archived under
 baseline remain separately labelled above. Reproduction commands are not pending checks for the
 already verified revision. Backup archive inspection is not proof of successful restoration.
 No cloud-hosted deployment has been created. Temporary remote access has been reported manually,
-the repository has been published, and the GitHub Actions result still needs verification.
+the repository has been published, and the owner-supplied GitHub Actions run #1 summary reports
+both jobs passed at `d65fb3c`. Later revisions require their own checks.
 The project's starting-code provenance has not been independently audited; modifications were
 developed with AI assistance using standard documented patterns.

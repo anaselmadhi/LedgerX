@@ -75,6 +75,14 @@ trip, production Docker build and personal local deployment passed. Evidence is 
 145 passes and one cleanup failure remain under `releases/2026-10-22-projection-first-run/`.
 The fixed cleanup passed the complete rerun. A backup archive was inspected, not restore-tested.
 
+## First GitHub Actions run
+
+`ci/initial-run-summary.json` transcribes the owner-supplied GitHub Actions summary for run #1 at
+commit `d65fb3c`. It reports both jobs passed and records their durations and the two artifact
+digests displayed by GitHub. It is a transcription of the supplied summary, not a downloaded
+Actions API response or an independent verification of the archive contents. It does not add
+remote per-test counts or establish checks for later commits.
+
 ## Temporary HTTPS sharing
 
 `scripts/share_local.sh` and `compose.share.yaml` provide an opt-in Cloudflare Quick Tunnel.

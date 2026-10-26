@@ -31,15 +31,17 @@ Evidence is written to `artifacts/web-verification.log`, `artifacts/web-containe
 and 12 browser cases against the production Docker target on 22 October 2026. It also completed
 latency measurements and the personal local deployment. Results are archived under
 `artifacts/releases/2026-10-22-projection/`; see [LATENCY_RESULTS.md](LATENCY_RESULTS.md).
-These local results do not establish a public deployment or a remote CI run.
+These local results are separate from the successful first remote CI run described below;
+they do not establish a cloud-hosted deployment.
 
 ## 2. Publish the existing project to GitHub
 
 The project has been published at [anaselmadhi/LedgerX](https://github.com/anaselmadhi/LedgerX).
 The owner supplied a successful push of merge commit `d65fb3c`, which combines the local import
-with GitHub's starter README. The [remote CI outcome](https://github.com/anaselmadhi/LedgerX/actions)
-still needs verification. Keep future fixes and enhancements in focused branches/PRs, with actual
-validation results and normal dates.
+with GitHub's starter README. The owner-supplied [Actions](https://github.com/anaselmadhi/LedgerX/actions)
+run #1 summary confirms both `verify` and `container-browser` passed for that commit; see the
+[CI evidence](../artifacts/ci/initial-run-summary.json). Keep future fixes and enhancements in
+focused branches/PRs, with actual validation results and normal dates.
 
 Commit source, migrations, lockfiles, configuration examples and curated documentation/evidence.
 Exclude `.env*` except `.env.example`, `.runtime`, `.venv`, `node_modules`, temporary browser files,

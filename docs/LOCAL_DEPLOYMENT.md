@@ -126,4 +126,5 @@ The first attempt stopped on a fault-injection cleanup error before updating the
 That error is fixed and the complete rerun passed. Release failure-injection tests separately
 exercise simulated Docker failures and SIGINT cleanup. A saved and readable backup archive has
 not yet been restored into a separate database. Temporary remote access has been reported manually;
-cloud hosting remains unexecuted and the remote CI outcome is awaiting verification.
+cloud hosting remains unexecuted. The owner-supplied GitHub Actions run #1 summary reports both
+jobs passed at `d65fb3c`; see the [CI evidence](../artifacts/ci/initial-run-summary.json).

@@ -1,5 +1,7 @@
 # LedgerX — transactional financial backend & React workspace
 
+[![LedgerX verification](https://github.com/anaselmadhi/LedgerX/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/anaselmadhi/LedgerX/actions/workflows/ci.yml)
+
 LedgerX is an independently developed fintech portfolio project built with Python, FastAPI,
 SQLAlchemy 2 and PostgreSQL. It demonstrates exact monetary arithmetic, authenticated account
 ownership, double-entry bookkeeping, concurrent spending protection, persistent idempotency,
@@ -29,8 +31,11 @@ unexpected responses** and correct accounting. Those numbers describe its archiv
 not schema `0004`. On 26 October, the project owner reported successful remote access and transfers
 from a friend's computer through the temporary HTTPS tunnel. The subsequent administrator
 reconciliation showed **7 accounts, 8 transfers, 16 journal entries and no discrepancies**.
-The repository is now published on GitHub; the [remote CI result](https://github.com/anaselmadhi/LedgerX/actions)
-still needs verification. A cloud-hosted deployment has not been executed. See the
+The first [GitHub Actions run](https://github.com/anaselmadhi/LedgerX/actions/workflows/ci.yml)
+**succeeded for commit `d65fb3c`**: both `verify` and `container-browser` passed, with a total
+duration of **11 min 27 s**. The owner supplied the run summary; its scope and artifact digests
+are recorded in the [CI evidence summary](artifacts/ci/initial-run-summary.json).
+A cloud-hosted deployment has not been executed. See the
 [sharing guide](docs/SHARING.md), [deployment guide](docs/DEPLOYMENT.md) and
 [GitHub workflow](docs/GITHUB_WORKFLOW.md).
 
@@ -692,9 +697,13 @@ GitHub Actions provisions PostgreSQL 16, runs lint/formatting, unit/integration 
 migration verification, starts Uvicorn and runs the real HTTP E2E tests. It also installs the locked
 frontend dependencies, checks formatting/types, runs Vitest, builds the UI and runs Playwright
 against both controlled fixtures and the real API. JUnit, coverage, browser results and API logs
-are uploaded. The workflow is published; inspect
-[GitHub Actions](https://github.com/anaselmadhi/LedgerX/actions) for the remote result, which has not
-yet been verified in this report.
+are uploaded. The owner supplied the successful summary of **run #1 for `d65fb3c`**:
+`verify` passed in **11 min 24 s** and `container-browser` in **1 min 34 s**, with an overall
+duration of **11 min 27 s** because the jobs run concurrently. The
+[recorded summary](artifacts/ci/initial-run-summary.json) identifies the evidence source and the
+reported archive digests. The archives were not downloaded for independent inspection, so this
+summary establishes job outcomes without adding remote per-test counts. Check
+[GitHub Actions](https://github.com/anaselmadhi/LedgerX/actions) for subsequent commits.
 
 Verification is tracked by revision, so executed results and pending work stay distinct:
 
@@ -716,7 +725,7 @@ Verification is tracked by revision, so executed results and pending work stay d
 | Archived 20 October performance experiment | **90/90 cases**, 18,000 measured requests, zero unexpected responses |
 | New latency experiment | 36 closed-loop cases, 1,200 profiled transfers, 18 fixed-arrival cases; accounting verified, high-load targets unmet |
 | Remote browser demonstration, 26 October | Owner reported successful remote access/transfers; administrator reconciliation found no discrepancies |
-| Remote CI | Workflow published; result awaiting verification |
+| Remote CI, run #1 at `d65fb3c` | **Success**: `verify` 11 min 24 s, `container-browser` 1 min 34 s; total 11 min 27 s, from the owner-supplied Actions summary |
 | Cloud-hosted deployment | Not executed |
 
 The archived 115-test backend release consists of 53 isolated tests, 60 PostgreSQL-backed tests and two
