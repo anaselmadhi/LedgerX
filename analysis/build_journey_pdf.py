@@ -570,7 +570,8 @@ def main():
             (
                 "Version 0004 validée : 147 tests unitaires/intégration et 2 E2E HTTP, "
                 "94,12 % de couverture. Rapports archivés dans artifacts/releases. "
-                "La CI distante reste à exécuter ; le déploiement Docker local réussit."
+                "Le premier run GitHub Actions de d65fb3c a réussi ; la PR #1 a aussi été"
+                " confirmée verte par le propriétaire. La mise à jour du workflow attend son run."
             ),
             y + 19,
         )
@@ -1187,12 +1188,13 @@ def main():
         code_block(
             ax,
             "git switch main && git pull --ff-only\n"
-            "git switch -c fix/ci-action-runtimes\n"
+            "git switch -c docs/ci-and-rebuild-guide\n"
             "# modifier puis relire le diff\n"
             "git diff --check && git diff\n"
-            "git add .github/workflows/ci.yml docs/ENGINEERING_REPORT.md\n"
-            "git commit -m \"Update GitHub Actions runtimes\"\n"
-            "git push -u origin fix/ci-action-runtimes\n"
+            "git add .github/workflows/ci.yml analysis/build_journey_pdf.py \\\n"
+            "  docs/ENGINEERING_REPORT.md output/pdf/ledgerx-construction-pas-a-pas.pdf\n"
+            "git commit -m \"Modernize CI and document LedgerX rebuild\"\n"
+            "git push -u origin docs/ci-and-rebuild-guide\n"
             "# GitHub: Compare & pull request -> checks -> Merge",
             411,
             155,
@@ -1213,7 +1215,7 @@ def main():
         footer_note(
             ax,
             "ETAT AU 27 OCTOBRE",
-            "Import publie; PR #1 (README et captures) fusionnee, checks confirmes verts par le proprietaire. Le changement des versions CI est prepare localement; son prochain run doit le confirmer.",
+            "Import publie; PR #1 (README et captures) fusionnee, checks confirmes verts par le proprietaire. La branche docs/ci-and-rebuild-guide contient la modernisation CI; verifier les checks de sa PR avant fusion.",
             y=722,
         )
         pdf.savefig(fig)
@@ -1253,6 +1255,152 @@ def main():
         code_block(ax, ".venv/bin/python -m scripts.create_remote_admin\n.venv/bin/python -m scripts.smoke_public --url https://TON-SERVICE.onrender.com", 489, 75, "APRES AVOIR CONFIGURE LES SERVICES DISTANTS")
         paragraph(ax, "Le service gratuit peut s'endormir et la base gratuite Render expire apres 30 jours. Kubernetes n'est pas requis. Ce projet n'a pas ete deploye sur le cloud.", 45, 585, width=88, size=8.5, line=12)
         footer_note(ax, "RECUPERATION A COMPLETER", "Tester pg_restore dans une base separee, verifier le schema et lancer la reconciliation. Ne restaure jamais sur ledgerx pendant ce test. La CI du changement de workflow doit aussi passer avant fusion.", y=722)
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            21,
+            "Lire le code",
+            "A quoi sert chaque dossier ?",
+            "La requete HTTP traverse des couches courtes. Chaque fichier a une responsabilite; la transaction financiere reste dans PostgreSQL.",
+        )
+        map_rows = [
+            ("app/api/ + main.py + start.py", "Routes HTTP, auth, limites, middleware, demarrage et serving du frontend."),
+            ("app/schemas/", "DTO Pydantic : formes d'entree/sortie, validation et limites; pas de requetes SQL."),
+            ("app/services/", "Regles metier : comptes, transferts, cles idempotentes et audit; le routeur ouvre/termine la transaction."),
+            ("app/db/", "Modeles SQLAlchemy, moteur et fabrique de sessions; une session par requete, jamais partagee entre threads."),
+            ("app/core/", "Configuration, montants/cursors, securite, erreurs, rate limit et observabilite."),
+            ("alembic/", "Historique du schema; 0001-0004 ajoutent progressivement contraintes, auth, remboursements et projection."),
+            ("frontend/src/", "App React; components = ecrans; lib/api.ts = HTTP; money.ts = cents/BigInt; types.ts = contrats."),
+            ("frontend/tests/ + e2e/", "Vitest teste API/montants; Playwright teste desktop, mobile et le vrai parcours HTTP."),
+            ("tests/", "Unitaires, PostgreSQL, course, rollback, migration, securite, endpoints et scenarios de charge."),
+            ("scripts/", "Installer, lancer, verifier, mesurer, sauvegarder, partager et preparer un admin distant."),
+            ("compose.yaml + Dockerfile + docker/", "Services app/db/test; image web-build/runtime/test; initialisation des bases jetables."),
+            (".github/ + docs/", "Workflow CI et modele PR; guides engineering, usage local, partage, latency et deploiement."),
+            ("analysis/ + artifacts/", "Analyse/figures/PDF generator; preuves de runs, mesures et rapports; artefacts distingues par revision."),
+            (".runtime/ + app/web/", "Etat local ignore : DB, caches, sauvegardes. app/web est un build genere, pas la source React."),
+        ]
+        for i, (name, description) in enumerate(map_rows):
+            y = 171 + i * 39
+            ax.text(45, y, name, fontsize=7.8, color=GREEN, weight="bold", va="top")
+            paragraph(ax, description, 231, y, width=58, size=7.2, line=9.5)
+            ax.plot([45, 550], [y + 31, y + 31], color="#e6eadf", lw=0.45)
+        footer_note(ax, "TRACE D'UNE REQUETE", "frontend/src/lib/api.ts -> app/api -> schema -> service -> SQLAlchemy/Psycopg -> PostgreSQL. La reponse HTTP est envoyee apres commit.", y=722)
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            22,
+            "Algorithmes et structures",
+            "Pourquoi ces choix ?",
+            "Les complexites donnent le travail attendu, pas une latence garantie. Le choix vise LedgerX; aucun algorithme n'est le meilleur partout.",
+        )
+        algorithm_cards = [
+            ("Centimes entiers + BigInt", "Python int et PostgreSQL BIGINT font des additions exactes. Le navigateur garde BigInt et lossless-json evite l'arrondi de Number. Cout constant par operation; limite explicite de montant."),
+            ("Journal double entree", "Deux lignes signees par transfert; somme zero. Un journal append-only rend l'audit possible. Le solde courant est une projection pour les lectures rapides, controlee contre les ecritures."),
+            ("Projection incrementale", "Trigger groupe seulement les nouvelles lignes et applique les deltas. La validation ne rescane plus E_a ecritures historiques; echanges : updates, WAL et stockage supplementaires."),
+            ("Verrous PostgreSQL ordonnes", "Trier les deux UUID puis FOR UPDATE : deux chemins A->B/B->A prennent le meme ordre. Cout O(1) pour deux comptes; la base bloque le meme solde jusqu'au commit."),
+            ("Identite SQLAlchemy rafraichie", "populate_existing=True remplace une entite potentiellement vieille dans l'identity map apres le verrou. FOR UPDATE seul ne suffit pas si Python garde un ancien solde."),
+            ("Idempotence persistante", "Cle composite (principal, operation, cle) indexee B-tree; SHA-256 du JSON canonique reconnait le payload. INSERT ON CONFLICT RETURNING evite une lecture pour une nouvelle cle."),
+            ("Curseur + index compose", "(account_id, created_at, id) permet un seek B-tree O(log E + L). OFFSET saute O lignes et coute environ O(log E + O + L); curseur lie au compte, pas un jeton d'autorisation."),
+            ("Deque du rate limiter", "Deque de temps, compteurs et verrou bref donnent un cout amorti proche de O(1) pour expirer/admettre. Hachage scrypt/SQL restent hors verrou. Etat local au processus."),
+        ]
+        for i, (title, body) in enumerate(algorithm_cards):
+            col, row = i % 2, i // 2
+            x, y = 45 + col * 258, 169 + row * 132
+            box(ax, x, y, 247, 119)
+            ax.text(x + 12, y + 19, title, fontsize=8.2, color=GREEN, weight="bold")
+            paragraph(ax, body, x + 12, y + 37, width=43, size=7.15, line=9.6)
+        footer_note(ax, "RECONCILIATION = AUDIT, PAS HOT PATH", "Une requete SQL independante recalcule les sommes depuis toutes les ecritures et compare balances + projection. Travail proportionnel a l'historique; executee a la demande, sans reparer silencieusement.", y=722)
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            23,
+            "Profilage reproductible",
+            "Mesurer le bon niveau.",
+            "Trois mesures differentes repondent a trois questions differentes : API complete, service/commit, et plan d'une requete SQL.",
+        )
+        for i, (title, body) in enumerate([
+            ("HTTP ferme - scripts/benchmark.py", "ThreadPoolExecutor envoie une requete par client a la fois. Vrai TCP vers API + PostgreSQL; login/setup hors chrono; percentiles, statuts, soldes et reconciliation en sortie."),
+            ("Service/commit - profile_workload.py", "cProfile observe les fonctions Python; SQLAlchemy compte execute/duree; perf_counter separe service et commit. 100 transferts par profondeur, plusieurs repetitions."),
+            ("Arrivees fixes - benchmark_open_loop.py", "asyncio planifie les requetes a l'avance sans attendre chaque reponse. Compte les demandes proposees, envoyees et abandonnees; latence inclut attente de dispatch."),
+        ]):
+            y = 174 + i * 105
+            box(ax, 45, y, 505, 88)
+            ax.text(60, y + 18, title, fontsize=8.5, color=GREEN, weight="bold")
+            paragraph(ax, body, 60, y + 38, width=96, size=8, line=11)
+        code_block(
+            ax,
+            "docker compose up -d db              # lancer PostgreSQL local\n"
+            "# mesures isolees dans ledgerx_bench\n"
+            "bash scripts/verify_latency.sh          # matrice complete\n"
+            "bash scripts/verify_latency.sh --quick  # fumee courte, pas une reference\n"
+            "# rapports JSON/Markdown/PNG dans artifacts/latency/\n"
+            "# EXPLAIN (ANALYZE, BUFFERS) compare les plans offset/cursor",
+            502,
+            104,
+            "COMMANDES ET OUTILS",
+            7.1,
+        )
+        paragraph(ax, "Le profil courant utilise 0, 100, 1 000 et 10 000 transferts prepares, 100 echantillons et 3 repetitions. cProfile ajoute du cout : ses ms ne sont pas la latence HTTP. Le commit inclut les triggers differes; le chrono SQL ne compte pas leur SQL interne.", 45, 623, width=88, size=8, line=11)
+        footer_note(ax, "RESULTAT 0004", "p95 service median : 4,85 ms a profondeur 0, 5,75 ms a 10 000. Cela montre la validation independante de l'historique dans ce test; ce n'est pas un gain causal HTTP ni un SLO.", y=722)
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            24,
+            "Technologies et outils",
+            "Role, raison, usage.",
+            "Chaque outil repond a un besoin precis. Les lignes de commande sont celles du depot; verrouiller les versions rend les reprises comparables.",
+        )
+        tool_cards = [
+            ("Python 3.12 + FastAPI + Uvicorn", "Règles métier et routes HTTP. Pydantic valide les entrées. Routes synchrones pour Psycopg bloquant; Uvicorn sert l'ASGI."),
+            ("SQLAlchemy 2 + Psycopg 3", "ORM/session et pilote PostgreSQL. Session par requete, transaction explicite dans la route; service flush, ne commit pas."),
+            ("PostgreSQL 16 + Alembic", "Source durable, index, contraintes, verrous et triggers. Alembic versionne les changements; migrations vérifiées sur _test."),
+            ("React 19 + TypeScript + Vite", "Interface composants/types; Vite compile statique dans app/web. Node sert au build, pas au runtime de production."),
+            ("BigInt + lossless-json", "Transporte les cents au-delà de Number.MAX_SAFE_INTEGER sans arrondi. Ne convertir en Number que des ratios graphiques bornés."),
+            ("pytest + Ruff + Vitest", "pytest couvre unitaires/PostgreSQL/HTTP; Ruff vérifie Python; Vitest vérifie montants et client API."),
+            ("Playwright + HTTPX", "Playwright contrôle l'interface desktop/mobile; HTTPX pilote API, vrais parcours et matrices de charge."),
+            ("Docker + Compose", "Image reproductible et services app/db/test/bench. Volume local garde la DB; ports app et DB liés à localhost."),
+            ("GitHub Actions", "Machine temporaire: Postgres de test, deux jobs, rapports. Le workflow actuel ne publie pas l'app."),
+            ("Prometheus + logs JSON", "Compteurs et histogrammes par route/type de resultat; requetes loguees sans secret ni ID arbitraire."),
+            ("uv + lockfiles", "uv.lock fige Python; package-lock.json fige npm; uv sync --frozen et npm ci reproduisent le graphe."),
+            ("cProfile + EXPLAIN", "Le premier trouve les fonctions CPU; le second montre le plan SQL execute. Comparer avec HTTP reel avant d'annoncer un gain."),
+        ]
+        for i, (title, body) in enumerate(tool_cards):
+            col, row = i % 2, i // 2
+            x, y = 45 + col * 258, 166 + row * 90
+            box(ax, x, y, 247, 79)
+            ax.text(x + 11, y + 17, title, fontsize=7.7, color=GREEN, weight="bold")
+            paragraph(ax, body, x + 11, y + 33, width=46, size=6.85, line=8.6)
+        footer_note(ax, "NE PAS AJOUTER POUR FAIRE JOLI", "Pas de microservices, Redis, Kafka ou Kubernetes : une transaction PostgreSQL unique rend le flux plus simple a raisonner. Ajouter une brique seulement si une mesure ou un besoin reel le justifie.", y=722)
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            25,
+            "Questions de conception",
+            "Les reponses a defendre.",
+            "Pour chaque decision : invariant, risque, mecanisme, preuve, compromis. C'est le fil conducteur a utiliser en entretien.",
+        )
+        decisions = [
+            ("Pourquoi des centimes entiers ?", "Pas d'arrondi binaire. Un transfert de 12,34 EUR vaut 1 234; l'API refuse fraction, zero et signe negatif."),
+            ("Pourquoi double entree ?", "Chaque debit a son credit; somme globale nulle. Le journal immuable garde l'audit et la reconciliation peut recalculer les soldes."),
+            ("Pourquoi la DB decide ?", "Le verrou FOR UPDATE et les contraintes couvrent plusieurs threads/processus. Un mutex Python ou un cache seul ne protege pas les autres workers."),
+            ("Pourquoi idempotence persistante ?", "Le serveur peut commit puis perdre la reponse. Meme cle + meme payload retrouve le transfert; cle reutilisee avec payload different donne conflit."),
+            ("Pourquoi une projection ?", "La validation 0003 rescannait les ecritures du compte. La projection incrementale rend cette validation independante de E_a; reconciliation continue le scan complet."),
+            ("Pourquoi un monolithe modulaire ?", "Debit, credit, journal et cle se commitent dans une seule DB. Des services separes imposeraient outbox/sagas sans benefice prouve ici."),
+            ("Pourquoi pas C++ pour LedgerX ?", "Profilage: attente DB/verrous, pas preuve que le bytecode est le goulet. C++ ne rend pas paralleles deux debits sur le meme compte; bon sujet pour un moteur d'ordres distinct."),
+            ("Pourquoi pas cloud / Kubernetes ?", "Le besoin actuel est portfolio/demo locale. Docker reproduit l'execution; GitHub Actions verifie. Hebergement, sauvegarde restauree et haute dispo restent des travaux distincts."),
+        ]
+        for i, (question, answer) in enumerate(decisions):
+            col, row = i % 2, i // 2
+            x, y = 45 + col * 258, 171 + row * 130
+            box(ax, x, y, 247, 116)
+            ax.text(x + 12, y + 19, question, fontsize=8.1, color=GREEN, weight="bold")
+            paragraph(ax, answer, x + 12, y + 38, width=43, size=7.2, line=9.5)
+        footer_note(ax, "COMMENT PARLER DES MESURES", "Distinguer plan SQL, service avec profiler, HTTP ferme et arrivees fixes. Dire aussi ce qui n'a pas passe: 11 561 arrives sur 30 000 ont ete abandonnees par le generateur a charge elevee.", y=722)
         pdf.savefig(fig)
         plt.close(fig)
     print(OUT)
