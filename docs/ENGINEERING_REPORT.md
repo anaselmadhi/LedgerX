@@ -92,9 +92,10 @@ The archives were not downloaded or independently hash-checked, and no remote pe
 are inferred from the run summary. This evidence applies to `d65fb3c` only.
 
 The successful run also reported two Node 20 action-runtime warnings and two `ubuntu-latest`
-migration notices. The frontend build already selects Node 24; the warnings concern the runtime
-metadata of the checkout/setup/upload actions. Updating those actions to releases using Node 24
-and selecting an explicit supported runner image are follow-up maintenance work. See
+migration notices. The frontend build already selected Node 24. The workflow now selects the
+Node 24 compatible major releases of checkout, setup-python, setup-node and upload-artifact, and
+pins both jobs to `ubuntu-24.04`. These changes are pending their own pull-request CI run; the
+initial success above does not verify them. The runner and action releases are documented by
 [GitHub's Node migration notice](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/)
 and [the Ubuntu image rollout](https://github.com/actions/runner-images/issues/14748).
 

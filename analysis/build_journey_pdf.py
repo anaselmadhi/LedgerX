@@ -43,7 +43,8 @@ def page(number, section, title, subtitle=""):
         paragraph(ax, subtitle, 45, 132, width=86, size=9.2, color=MUTED)
     ax.plot([45, 550], [797, 797], color="#dfe7d5", lw=0.7)
     ax.text(
-        45, 815, "Portfolio indépendant · Fonds fictifs · 22 octobre 2026", fontsize=7, color=MUTED
+        45, 815, "Portfolio indépendant · Fonds fictifs · Dossier mis à jour le 27 octobre 2026",
+        fontsize=7, color=MUTED
     )
     ax.text(550, 815, f"{number:02d}", fontsize=8, color=GREEN, ha="right")
     return fig, ax
@@ -110,6 +111,22 @@ def footer_note(ax, title, body, y=712):
     box(ax, 45, y, 505, 64)
     ax.text(60, y + 19, title, fontsize=8, color=GREEN, weight="bold")
     paragraph(ax, body, 60, y + 30, width=91, size=8, line=12)
+
+
+def code_block(ax, text, y, height, title="COMMANDE", size=8.2):
+    box(ax, 45, y, 505, height, fill="#f1f3ee", border="#dfe7d5", radius=7)
+    ax.text(60, y + 16, title, fontsize=7, color=GREEN, weight="bold", va="top")
+    text = text.replace("$", r"\$")
+    ax.text(
+        60,
+        y + 34,
+        text,
+        fontsize=size,
+        color=INK,
+        family="DejaVu Sans Mono",
+        va="top",
+        linespacing=1.28,
+    )
 
 
 def main():
@@ -818,7 +835,7 @@ def main():
             12,
             "Préparer l'ouverture",
             "De la démo locale au web.",
-            "Étapes 19 et 20 · Docker validé sur 0004 ; partage HTTPS à tester.",
+            "Étapes 19 et 20 · Docker local vérifié sur 0004 ; tunnel public testé manuellement.",
         )
         node(ax, 45, 183, 145, 65, "Navigateur", "Session en mémoire")
         node(ax, 225, 183, 145, 65, "Docker / API", "Mac ou hébergeur", True)
@@ -861,8 +878,8 @@ def main():
         footer_note(
             ax,
             "HISTORIQUE GITHUB",
-            "Importer honnêtement le travail local, puis créer des PR pour les évolutions réelles."
-            " Les résultats et dates correspondent aux vérifications exécutées.",
+            "Importer honnêtement le travail local. Depuis la publication, README corrigé en PR #1 ;"
+            " les vérifications ont été confirmées par le propriétaire.",
             y=722,
         )
         pdf.savefig(fig)
@@ -991,11 +1008,251 @@ def main():
         footer_note(
             ax,
             "CE QUI RESTE À VÉRIFIER",
-            "Parcours navigateur externe à terminer, CI GitHub à lancer, restauration sur base "
-            "séparée et test de charge longue à faire. La sauvegarde est créée, sa restauration "
-            "n'a pas encore été vérifiée.",
+            "CI du premier push et PR #1 confirmées vertes par le propriétaire. Restauration de"
+            " sauvegarde sur base isolée, charge longue et hébergement cloud restent à faire.",
             y=722,
         )
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            15,
+            "Reproduire le projet",
+            "Partir du code et le lancer.",
+            "Guide pratique pour debuter : ces etapes repartent du depot publie, pas d'un dossier vide.",
+        )
+        ax.text(45, 181, "01 / RECUPERER ET PREPARER", fontsize=8, color=GREEN, weight="bold")
+        code_block(
+            ax,
+            "git clone https://github.com/anaselmadhi/LedgerX.git\n"
+            "cd LedgerX\n"
+            "cp .env.example .env\n"
+            "mkdir -p .runtime/tmp .runtime/cache/uv\n"
+            "TMPDIR=\"$PWD/.runtime/tmp\" UV_CACHE_DIR=\"$PWD/.runtime/cache/uv\" \\\n"
+            "  UV_PYTHON_DOWNLOADS=never uv sync --frozen --python 3.12",
+            198,
+            133,
+            "TERMINAL - A LA RACINE DU PROJET",
+            7.3,
+        )
+        paragraph(
+            ax,
+            "Prerequis Mac : Git, Python 3.12, Docker Desktop (installe puis ouvert) et une"
+            " connexion internet. Si uv manque : brew install uv. Le depot contient le code, les"
+            " migrations, les tests et la configuration. .env est local et ignore par Git : ne"
+            " publie jamais son contenu.",
+            45,
+            350,
+            width=88,
+            size=9,
+            line=13,
+        )
+        ax.text(45, 417, "02 / ORDRE DE CONSTRUCTION DU LOGICIEL", fontsize=8, color=GREEN, weight="bold")
+        for i, (title, body) in enumerate([
+            ("Backend", "Routes FastAPI -> schemas Pydantic -> services -> PostgreSQL via SQLAlchemy."),
+            ("Comptabilite", "Montants en centimes, deux ecritures par transfert, contraintes DB et migrations Alembic."),
+            ("Tests", "Tests unitaires puis PostgreSQL reel; verrous et transactions ne se prouvent pas avec SQLite."),
+            ("Interface", "React/TypeScript; Node construit les fichiers web, FastAPI les sert ensuite."),
+            ("Livraison", "Docker empaquette API + interface; Compose lance aussi PostgreSQL; Actions verifie les changements."),
+        ]):
+            y = 444 + i * 48
+            ax.text(45, y, f"{i + 1:02d}", fontsize=9, color=GREEN, weight="bold")
+            ax.text(78, y, title, fontsize=9, color=INK, weight="bold")
+            paragraph(ax, body, 177, y, width=58, size=8, line=11)
+        ax.text(45, 681, "CHOIX PYTHON / C++", fontsize=7, color=GREEN, weight="bold")
+        paragraph(
+            ax,
+            "Garder Python pour ce backend : les mesures pointent vers l'attente PostgreSQL et les verrous. C++ ne les supprime pas; l'envisager pour un composant CPU-mesure ou un projet moteur d'ordres distinct.",
+            145,
+            680,
+            width=68,
+            size=7.5,
+            line=10,
+        )
+        footer_note(
+            ax,
+            "REFAIRE SEULE",
+            "Lis les pages 02 a 14 pour les decisions de conception, puis suis les commandes des pages 15 a 20 pour les reproduire.",
+            y=722,
+        )
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            16,
+            "Docker sans jargon",
+            "Image, conteneur, donnees.",
+            "Docker emballe et lance le programme. Il ne remplace pas PostgreSQL et ne publie pas a lui seul un site sur internet.",
+        )
+        for i, (title, body) in enumerate([
+            ("Image", "Modele construit depuis Dockerfile : Python, dependances, code et interface compilee."),
+            ("Conteneur", "Programme en execution depuis une image. Compose lance app et db ensemble."),
+            ("Volume", "Le dossier .runtime/postgres conserve les donnees PostgreSQL quand le conteneur est arrete."),
+            ("Port", "127.0.0.1:8000 rend le site accessible sur ce Mac seulement. PostgreSQL reste local aussi."),
+        ]):
+            y = 181 + i * 68
+            box(ax, 45, y, 505, 55)
+            ax.text(60, y + 18, title, fontsize=10, color=GREEN, weight="bold")
+            paragraph(ax, body, 145, y + 17, width=68, size=8.4, line=12)
+        ax.text(45, 462, "COMMANDES COURANTES", fontsize=8, color=GREEN, weight="bold")
+        code_block(
+            ax,
+            "docker compose up -d db app         # demarrer\n"
+            "docker compose ps                   # etat (healthy = prete)\n"
+            "docker compose logs --tail=100 app  # erreurs de l'app\n"
+            "docker compose stop app db          # arreter sans supprimer\n"
+            "docker compose start db app         # redemarrer",
+            479,
+            122,
+            "TERMINAL - TOUS LES JOURS",
+            7.1,
+        )
+        code_block(
+            ax,
+            "bash scripts/setup_frontend.sh      # installe Node 24 local\n"
+            "bash scripts/frontend.sh install   # dependances verrouillees\n"
+            "bash scripts/frontend.sh build     # compile vers app/web\n"
+            "docker compose build app           # reconstruit l'image API + UI",
+            620,
+            83,
+            "PREPARER L'INTERFACE ET L'IMAGE",
+            7.1,
+        )
+        footer_note(
+            ax,
+            "DONNEES PERSONNELLES",
+            "Ne supprime pas le volume pour depanner. La base contient profils et mouvements; les sauvegardes restent privees dans .runtime/backups/.",
+            y=722,
+        )
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            17,
+            "CI GitHub",
+            "Un robot verifie chaque changement.",
+            "CI signifie integration continue : GitHub cree une machine temporaire et rejoue les controles apres un push ou l'ouverture d'une PR.",
+        )
+        stages = [
+            ("1. Declencheur", "push ou pull_request : chaque changement propose est verifie."),
+            ("2. Machine", "ubuntu-24.04; environnement vierge, independant du Mac."),
+            ("3. Outils", "checkout@v7 recupere le code; setup-python@v7 installe Python 3.12; setup-node@v7 installe Node 24; uv sync suit uv.lock."),
+            ("4. Base jetable", "Un service PostgreSQL 16 est cree pour les tests. La base personnelle n'est pas utilisee."),
+            ("5. Verification", "Ruff, format, tests Python/PostgreSQL, migrations, HTTP, frontend et navigateur."),
+            ("6. Docker", "Un second job construit l'image de production et execute deux parcours navigateur avec PostgreSQL."),
+            ("7. Resultats", "upload-artifact@v7 archive les rapports. Vert = jobs passes pour ce commit; cela ne prouve ni capacite maximale ni cloud."),
+        ]
+        for i, (title, body) in enumerate(stages):
+            y = 177 + i * 72
+            ax.text(45, y, title, fontsize=9, color=GREEN, weight="bold", va="top")
+            paragraph(ax, body, 174, y, width=62, size=8.2, line=11.5)
+            ax.plot([45, 550], [y + 53, y + 53], color="#e6eadf", lw=0.5)
+        footer_note(
+            ax,
+            "CE QUE LA CI NE FAIT PAS",
+            "Elle n'heberge pas le site et ne touche pas a la base du Mac. Le workflow verifie et archive des rapports; il ne deploie rien.",
+            y=722,
+        )
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            18,
+            "GitHub et PR",
+            "Publier sans inventer l'historique.",
+            "Le depot a d'abord ete importe depuis le Mac. Chaque evolution suivante se fait sur une branche avec un changement reel, puis une pull request.",
+        )
+        ax.text(45, 177, "PREMIERE PUBLICATION - DEJA FAITE, NE PAS REJOUER", fontsize=8, color=GREEN, weight="bold")
+        code_block(
+            ax,
+            "git init -b main                 # si aucun depot Git local\n"
+            "git add .github .gitignore .dockerignore .env.example app alembic frontend \\\n"
+            "  scripts tests docker analysis docs output/pdf README.md INTERVIEW_NOTES.md \\\n"
+            "  pyproject.toml uv.lock alembic.ini Dockerfile compose.yaml compose.share.yaml render.yaml\n"
+            "git add artifacts/README.md artifacts/benchmark.json artifacts/profiling.json \\\n"
+            "  artifacts/baseline artifacts/figures artifacts/latency artifacts/releases \\\n"
+            "  artifacts/frontend-delivery.json  # uniquement les preuves relues\n"
+            "git diff --cached --check        # espaces parasites ?\n"
+            "git commit -m \"Import LedgerX financial demo developed locally\"\n"
+            "git remote add origin https://github.com/anaselmadhi/LedgerX.git\n"
+            "git fetch origin\n"
+            "git merge origin/main --allow-unrelated-histories --no-edit -X ours\n"
+            "git push -u origin main",
+            194,
+            177,
+            "TERMINAL - PUBLICATION INITIALE REELLE",
+            6.1,
+        )
+        ax.text(45, 394, "CHAQUE CHANGEMENT SUIVANT - EXEMPLE", fontsize=8, color=GREEN, weight="bold")
+        code_block(
+            ax,
+            "git switch main && git pull --ff-only\n"
+            "git switch -c fix/ci-action-runtimes\n"
+            "# modifier puis relire le diff\n"
+            "git diff --check && git diff\n"
+            "git add .github/workflows/ci.yml docs/ENGINEERING_REPORT.md\n"
+            "git commit -m \"Update GitHub Actions runtimes\"\n"
+            "git push -u origin fix/ci-action-runtimes\n"
+            "# GitHub: Compare & pull request -> checks -> Merge",
+            411,
+            155,
+            "TERMINAL PUIS PAGE GITHUB",
+            7,
+        )
+        paragraph(
+            ax,
+            "Une PR compare la branche a main : elle n'est pas vide si les changements ont ete"
+            " pousses. Le mot de passe HTTPS est un token GitHub, pas le mot de passe normal du"
+            " compte. Ne partage jamais ce token.",
+            45,
+            574,
+            width=88,
+            size=8.5,
+            line=12,
+        )
+        footer_note(
+            ax,
+            "ETAT AU 27 OCTOBRE",
+            "Import publie; PR #1 (README et captures) fusionnee, checks confirmes verts par le proprietaire. Le changement des versions CI est prepare localement; son prochain run doit le confirmer.",
+            y=722,
+        )
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            19,
+            "Lancer et tester",
+            "Le parcours reproductible.",
+            "La verification normale suffit pour controler le logiciel. Les mesures longues sont facultatives et ne sont pas necessaires pour ouvrir l'application chaque jour.",
+        )
+        ax.text(45, 177, "A / VERIFIER LE CODE ET POSTGRESQL", fontsize=8, color=GREEN, weight="bold")
+        code_block(ax, "bash scripts/verify_local.sh", 194, 50, "TERMINAL - TESTS ET MIGRATIONS")
+        paragraph(ax, "Utilise ledgerx_test (jetable) pour les tests destructifs et ledgerx_bench pour les parcours HTTP. Ne vide pas ledgerx, la base personnelle. Lance le pipeline seul.", 45, 258, width=88, size=8.5, line=12)
+        ax.text(45, 328, "B / VERIFIER L'IMAGE DOCKER ET LE NAVIGATEUR", fontsize=8, color=GREEN, weight="bold")
+        code_block(ax, "bash scripts/verify_web.sh --container", 345, 50, "TERMINAL - DOCKER DE TEST ISOLE")
+        paragraph(ax, "Utilise ledgerx_bench, demarre une API temporaire sur le port 8002, puis joue les parcours navigateur contre le vrai API et PostgreSQL. Ne lance pas de benchmark concurrent.", 45, 409, width=88, size=8.5, line=12)
+        ax.text(45, 479, "C / METTRE A JOUR L'APPLICATION PERSONNELLE", fontsize=8, color=GREEN, weight="bold")
+        code_block(ax, "ENABLE_DEV_FUNDING=true bash scripts/release_local.sh --full-profile", 496, 50, "PIPELINE LONG - PAS POUR CHAQUE DEMARRAGE")
+        paragraph(ax, "Enchaine tests, migrations, mesures, navigateur Docker, build, arret de l'app, pg_dump prive, migrations et smoke check. Les profils existants sont conserves. N'interromps pas pendant sauvegarde/migrations.", 45, 560, width=88, size=8.5, line=12)
+        code_block(ax, "docker compose start db app\n# ouvrir http://127.0.0.1:8000", 631, 58, "USAGE QUOTIDIEN APRES UN RELEASE VALIDE")
+        footer_note(ax, "RESULTATS REELS", "Dernier release local : 149 tests backend, 26 frontend et 12 navigateur passes. En charge elevee, le generateur a aussi abandonne des arrivees; aucune capacite maximum n'est certifiee.", y=722)
+        pdf.savefig(fig)
+        plt.close(fig)
+
+        fig, ax = page(
+            20,
+            "Partager et continuer",
+            "Local, tunnel ou cloud.",
+            "Ces choix changent qui peut joindre le serveur, combien de temps il reste disponible et ou les donnees sont stockees.",
+        )
+        ax.text(45, 177, "PARTAGER TEMPORAIREMENT DEPUIS LE MAC", fontsize=8, color=GREEN, weight="bold")
+        code_block(ax, "docker compose up -d db app\nbash scripts/share_local.sh", 194, 66, "LE LIEN HTTPS EST AFFICHE DANS LE TERMINAL")
+        paragraph(ax, "Envoie le lien trycloudflare a ton ami. Garde Mac, Docker et terminal du tunnel allumes; Ctrl+C coupe le lien public. L'ami cree un profil client normal. L'admin peut ajouter des fonds fictifs si ENABLE_DEV_FUNDING=true dans le .env local. Les donnees restent sur PostgreSQL de ton Mac.", 45, 278, width=88, size=8.5, line=12)
+        ax.text(45, 371, "HEBERGEMENT CLOUD - OPTIONNEL, PAS ENCORE FAIT", fontsize=8, color=GREEN, weight="bold")
+        paragraph(ax, "Le depot prepare Render (render.yaml) et decrit le parcours dans docs/DEPLOYMENT.md. En bref : creer un PostgreSQL distant dedie (Neon), garder son URL comme secret Render, creer le service web depuis le depot, attendre migrations et health check, creer l'admin distant separement, puis verifier l'URL publique. Ne jamais utiliser l'URL de la base locale.", 45, 394, width=88, size=8.5, line=12)
+        code_block(ax, ".venv/bin/python -m scripts.create_remote_admin\n.venv/bin/python -m scripts.smoke_public --url https://TON-SERVICE.onrender.com", 489, 75, "APRES AVOIR CONFIGURE LES SERVICES DISTANTS")
+        paragraph(ax, "Le service gratuit peut s'endormir et la base gratuite Render expire apres 30 jours. Kubernetes n'est pas requis. Ce projet n'a pas ete deploye sur le cloud.", 45, 585, width=88, size=8.5, line=12)
+        footer_note(ax, "RECUPERATION A COMPLETER", "Tester pg_restore dans une base separee, verifier le schema et lancer la reconciliation. Ne restaure jamais sur ledgerx pendant ce test. La CI du changement de workflow doit aussi passer avant fusion.", y=722)
         pdf.savefig(fig)
         plt.close(fig)
     print(OUT)
